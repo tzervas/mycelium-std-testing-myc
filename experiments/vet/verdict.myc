@@ -1,0 +1,117 @@
+// nodule: std.testing.verdict
+// Verdict types for `std.testing` (M-534, #174).
+//
+// The `Verdict` sum is the load-bearing type: **`Skipped` and `Undetermined` are first-class
+// variants**, not flavours of `Pass` (spec §3 / §4.1 C1 — the honesty crux). Every non-`Pass`
+// verdict is a reified, inspectable artifact (C3/G11/SC-3).
+// @summary: best-effort transpilation via mycelium-transpile (M-873). Declared,
+// unvalidated — no Mycelium parser/typechecker confirms this output; see the
+// accompanying .gap.json for every construct this pass could not express.
+nodule std.testing.verdict;
+
+// A structured failure record carried by [`Verdict::Fail`].
+//
+// This is the `std.testing` representation of a diagnostic record (spec §3:
+// `Fail { diagnostic: Diag }`).
+//
+// # FLAG-DIAG (RESOLVED, testing↔diag seam — spec §7-Q2)
+// `std.diag` (M-510) has landed, so `FailRecord` now **delegates** to its canonical record:
+// [`FailRecord::to_diag`] projects to a [`mycelium_diag::Diag`] — the structured diagnostic the
+// rest of the failure-legibility substrate speaks (README §5). `FailRecord` keeps the
+// **testing-specific reproduction metadata** (the seed + trial index) that a generic `Diag` does
+// not model, and folds them — with the description and op context — into the `Diag`'s message and
+// notes. The `Diag` is the legibility artifact; this record is its seed-reproducible test wrapper.
+//
+// # C1 — never-silent
+// Every failure is a structured record with a description + reproducing seed — never an opaque
+// red/green bit (RFC-0013 via spec §4.1 C3).
+//
+// # C3 — EXPLAIN
+// The `description` carries the shrunk counterexample or diff; the `seed` makes the failure
+// reproducible; the `context` names the op that failed. This is the EXPLAIN artifact.
+pub type FailRecord = FailRecord(Bytes, Binary{64}, Binary{32}, Bytes);
+
+impl Show[FailRecord] for FailRecord {
+  fn render(x: FailRecord) => Bytes =
+    match x { FailRecord(p0, p1, p2, p3) => bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat("FailRecord(", render(p0)), ", "), render(p1)), ", "), render(width_cast(p2, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ", "), render(p3)), ")") };
+};
+
+fn eq_FailRecord(a: FailRecord, b: FailRecord) => Binary{1} =
+    match a { FailRecord(p0, p1, p2, p3) => match b { FailRecord(q0, q1, q2, q3) => and(and(and(bytes_eq(p0, q0), eq(p1, q1)), eq(p2, q2)), bytes_eq(p3, q3)) } };
+
+// The reason a test was skipped (spec §3).
+//
+// A `Skipped` verdict always carries a reason — **never** an absent or unnamed skip (C1/G2).
+// The reason is part of the EXPLAIN artifact; a skip without a reason would be a black box
+// (C3).
+pub type SkipReason = Ignored | UnmetPrecondition | NeedsRecord | BackendUnavailable | ToolMissing;
+
+impl Show[SkipReason] for SkipReason {
+  fn render(x: SkipReason) => Bytes =
+    match x { Ignored => "Ignored", UnmetPrecondition => "UnmetPrecondition", NeedsRecord => "NeedsRecord", BackendUnavailable => "BackendUnavailable", ToolMissing => "ToolMissing" };
+};
+
+fn eq_SkipReason(a: SkipReason, b: SkipReason) => Binary{1} =
+  match a { Ignored => match b { Ignored => 0b1, _ => 0b0 }, UnmetPrecondition => match b { UnmetPrecondition => 0b1, _ => 0b0 }, NeedsRecord => match b { NeedsRecord => 0b1, _ => 0b0 }, BackendUnavailable => match b { BackendUnavailable => 0b1, _ => 0b0 }, ToolMissing => match b { ToolMissing => 0b1, _ => 0b0 } };
+
+// The reason a test result is undetermined (ran but could not decide — spec §3).
+//
+// `Undetermined` is distinct from both `Pass` and `Skipped`:
+// - `Skipped` = could not run.
+// - `Undetermined` = ran but could not reach a verdict.
+//
+// A non-decision is **never** a `Pass` (C1/G2).
+pub type UndetReason = OracleUnavailable | BudgetExhaustedInconclusive | NonDeterministicInput;
+
+impl Show[UndetReason] for UndetReason {
+  fn render(x: UndetReason) => Bytes =
+    match x { OracleUnavailable => "OracleUnavailable", BudgetExhaustedInconclusive => "BudgetExhaustedInconclusive", NonDeterministicInput => "NonDeterministicInput" };
+};
+
+fn eq_UndetReason(a: UndetReason, b: UndetReason) => Binary{1} =
+  match a { OracleUnavailable => match b { OracleUnavailable => 0b1, _ => 0b0 }, BudgetExhaustedInconclusive => match b { BudgetExhaustedInconclusive => 0b1, _ => 0b0 }, NonDeterministicInput => match b { NonDeterministicInput => 0b1, _ => 0b0 } };
+
+// The outcome of a single test case (spec §3 / §4 guarantee matrix).
+//
+// **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours
+// of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]
+// surfaces them. "Green" therefore means *checked and passed*, never *did not check* (C1/G2).
+//
+// # C3 — EXPLAIN
+// Every non-`Pass` variant is a reified, inspectable artifact:
+// - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.
+// - `Skipped` — carries a [`SkipReason`] (never a nameless skip).
+// - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).
+pub type Verdict = Pass | Fail(FailRecord) | Skipped(SkipReason) | Undetermined(UndetReason);
+
+impl Show[Verdict] for Verdict {
+  fn render(x: Verdict) => Bytes =
+    match x { Pass => "Pass", Fail(p0) => bytes_concat(bytes_concat("Fail(", render(p0)), ")"), Skipped(p0) => bytes_concat(bytes_concat("Skipped(", render(p0)), ")"), Undetermined(p0) => bytes_concat(bytes_concat("Undetermined(", render(p0)), ")") };
+};
+
+fn eq_Verdict(a: Verdict, b: Verdict) => Binary{1} =
+  match a { Pass => match b { Pass => 0b1, _ => 0b0 }, Fail(p0) => match b { Fail(q0) => eq_FailRecord(p0, q0), _ => 0b0 }, Skipped(p0) => match b { Skipped(q0) => eq_SkipReason(p0, q0), _ => 0b0 }, Undetermined(p0) => match b { Undetermined(q0) => eq_UndetReason(p0, q0), _ => 0b0 } };
+
+// The aggregated outcome of a collection of verdicts (spec §3 / [`crate::summarize`]).
+//
+// # The crux
+// `skipped` and `undetermined` are **distinct from `passed`** — a `Summary` cannot be used
+// to claim "all passed" when tests were skipped (C1/G2). See [`crate::is_green`].
+//
+// # EXPLAIN
+// The per-class counts are the EXPLAIN artifact: a caller can inspect them to see how many
+// tests ran, how many were skipped, and why the suite is or is not green.
+pub type Summary = Summary(Binary{32}, Binary{32}, Binary{32}, Binary{32});
+
+impl Show[Summary] for Summary {
+  fn render(x: Summary) => Bytes =
+    match x { Summary(p0, p1, p2, p3) => bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat(bytes_concat("Summary(", render(width_cast(p0, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ", "), render(width_cast(p1, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ", "), render(width_cast(p2, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ", "), render(width_cast(p3, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ")") };
+};
+
+fn eq_Summary(a: Summary, b: Summary) => Binary{1} =
+    match a { Summary(p0, p1, p2, p3) => match b { Summary(q0, q1, q2, q3) => and(and(and(eq(p0, q0), eq(p1, q1)), eq(p2, q2)), eq(p3, q3)) } };
+
+impl Init[Summary] for Summary {
+  fn init() => Summary =
+    Summary(0b0000_0000_0000_0000_0000_0000_0000_0000, 0b0000_0000_0000_0000_0000_0000_0000_0000, 0b0000_0000_0000_0000_0000_0000_0000_0000, 0b0000_0000_0000_0000_0000_0000_0000_0000);
+};

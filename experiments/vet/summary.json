@@ -1,0 +1,164 @@
+{
+  "files": [
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "total_items": 15,
+      "non_test_items": 15,
+      "emitted": 0,
+      "gaps": 15,
+      "expressible_pct": 0.0,
+      "category_counts": {
+        "Impl": 4,
+        "Import": 4,
+        "Other": 4,
+        "Struct": 3
+      }
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "total_items": 3,
+      "non_test_items": 3,
+      "emitted": 0,
+      "gaps": 3,
+      "expressible_pct": 0.0,
+      "category_counts": {
+        "Import": 1,
+        "Other": 1,
+        "Struct": 1
+      }
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "total_items": 20,
+      "non_test_items": 16,
+      "emitted": 7,
+      "gaps": 31,
+      "expressible_pct": 43.75,
+      "category_counts": {
+        "AssocConst": 2,
+        "DeriveAttr": 5,
+        "DeriveSatisfied": 4,
+        "Impl": 1,
+        "Import": 1,
+        "InnerAttr": 1,
+        "ModuleDecl": 3,
+        "MultiStmtBody": 3,
+        "NamedFieldDrop": 2,
+        "Other": 4,
+        "TestItem": 1,
+        "Trait": 1,
+        "WhereClause": 3
+      }
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "total_items": 7,
+      "non_test_items": 7,
+      "emitted": 5,
+      "gaps": 20,
+      "expressible_pct": 71.42857142857143,
+      "category_counts": {
+        "DeriveAttr": 2,
+        "DeriveSatisfied": 11,
+        "Impl": 2,
+        "NamedFieldDrop": 5
+      }
+    }
+  ],
+  "totals": {
+    "total_items": 45,
+    "non_test_items": 41,
+    "emitted": 12,
+    "gaps": 69,
+    "expressible_pct": 29.268292682926827,
+    "category_counts": {
+      "AssocConst": 2,
+      "DeriveAttr": 7,
+      "DeriveSatisfied": 15,
+      "Impl": 7,
+      "Import": 6,
+      "InnerAttr": 1,
+      "ModuleDecl": 3,
+      "MultiStmtBody": 3,
+      "NamedFieldDrop": 7,
+      "Other": 9,
+      "Struct": 4,
+      "TestItem": 1,
+      "Trait": 1,
+      "WhereClause": 3
+    }
+  },
+  "remap": {
+    "phylum": {
+      "source_crate": "mycelium-std-testing",
+      "target_phylum": "std.testing"
+    },
+    "nodules": [
+      {
+        "target_nodule": "std.testing.cert_mode_test",
+        "operation": "Keep",
+        "sources": [
+          {
+            "rust_path": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+            "rust_span": null,
+            "moved_items": []
+          }
+        ],
+        "rationale": "structure-preserving 1:1 (DN-109 §5.3-B v0 default: every emitted nodule keeps its source file's mod-tree position, no restructuring proposed)",
+        "safety": "Safe",
+        "api_surface_changed": false,
+        "identity_neutral": true,
+        "guarantee": "Declared"
+      },
+      {
+        "target_nodule": "std.testing.guarantee_matrix",
+        "operation": "Keep",
+        "sources": [
+          {
+            "rust_path": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+            "rust_span": null,
+            "moved_items": []
+          }
+        ],
+        "rationale": "structure-preserving 1:1 (DN-109 §5.3-B v0 default: every emitted nodule keeps its source file's mod-tree position, no restructuring proposed)",
+        "safety": "Safe",
+        "api_surface_changed": false,
+        "identity_neutral": true,
+        "guarantee": "Declared"
+      },
+      {
+        "target_nodule": "std.testing",
+        "operation": "Keep",
+        "sources": [
+          {
+            "rust_path": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+            "rust_span": null,
+            "moved_items": []
+          }
+        ],
+        "rationale": "structure-preserving 1:1 (DN-109 §5.3-B v0 default: every emitted nodule keeps its source file's mod-tree position, no restructuring proposed)",
+        "safety": "Safe",
+        "api_surface_changed": false,
+        "identity_neutral": true,
+        "guarantee": "Declared"
+      },
+      {
+        "target_nodule": "std.testing.verdict",
+        "operation": "Keep",
+        "sources": [
+          {
+            "rust_path": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+            "rust_span": null,
+            "moved_items": []
+          }
+        ],
+        "rationale": "structure-preserving 1:1 (DN-109 §5.3-B v0 default: every emitted nodule keeps its source file's mod-tree position, no restructuring proposed)",
+        "safety": "Safe",
+        "api_surface_changed": false,
+        "identity_neutral": true,
+        "guarantee": "Declared"
+      }
+    ],
+    "idiom_choices": []
+  }
+}

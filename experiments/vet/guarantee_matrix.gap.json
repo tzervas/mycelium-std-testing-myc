@@ -1,0 +1,37 @@
+{
+  "source": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+  "emitted_items": [],
+  "gaps": [
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 16,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "use mycelium_core :: GuaranteeStrength ;",
+      "reason": "`use mycelium_core::GuaranteeStrength` — `mycelium_core` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 18,
+      "col": 1,
+      "category": "Struct",
+      "rust_construct": "Struct",
+      "snippet": "# [doc = \" One row of the `std.testing` guarantee matrix.\"] # [doc = \"\"] # [doc = \" Mirrors the `GuaranteeRow` shape from `mycelium-std-core` (spec §4 / README §2) — kept\"] # [doc = \" local to avoid a circular crate dependency while `std.core` is not yet a dep.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub struct Row { # [doc = \" The exported op name.\"] pub op : & 'static str , # [doc = \" Guarantee tag on the `Exact ⊐ Proven ⊐ Empirical ⊐ Declared` lattice (RFC-0001 §4.3).\"] pub tag : GuaranteeStrength , # [doc = \" Explicit fallibility: `\\\"total\\\"` or the `Option`/`Result`/`Verdict` shape returned.\"] pub fallibility : & 'static str , # [doc = \" Declared effects (`\\\"none\\\"` for pure ops; `\\\"io (baseline read)\\\"` for golden).\"] pub effects : & 'static str , # [doc = \" Whether the op surfaces an EXPLAIN artifact (C3/SC-3/G11).\"] pub explainable : bool , }",
+      "reason": "struct `Row` uses named fields and references a type not resolvable in-file — emitting it positionally would introduce an unresolved reference that poisons the file's `myc check`; left gapped under the M-1006 resolvability gate (VR-5/G2)",
+      "item_name": "Row"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 36,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" The `std.testing` guarantee matrix (spec §4).\"] # [doc = \"\"] # [doc = \" Every row is `Exact` (the verdict mechanism is exact) and either effect-free or declares\"] # [doc = \" its IO effect explicitly (C6). EXPLAIN coverage is on every harness op that produces a\"] # [doc = \" non-`Pass` verdict (C3).\"] # [doc = \"\"] # [doc = \" | Op | Tag | Fallibility | Effects | EXPLAIN |\"] # [doc = \" |---|---|---|---|---|\"] # [doc = \" | `for_all` | Exact | `Fail{Diag}` / `Skipped{...}` as Verdict | none (pure; seeded) | yes |\"] # [doc = \" | `golden` | Exact | `Fail{diff}` / `Skipped{NeedsRecord}` | io (baseline read) | yes |\"] # [doc = \" | `differential` | Exact | `Fail{lhs,rhs}` / `Skipped{BackendUnavailable}` | none / io per backend | yes |\"] # [doc = \" | `summarize` | Exact | total | none | yes |\"] # [doc = \" | `is_green` | Exact | total | none | yes |\"] pub const MATRIX : & [Row] = & [Row { op : \"for_all\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{record} / Verdict::Skipped{NeedsRecord}\" , effects : \"none (pure; seeded — C6/RT3)\" , explainable : true , } , Row { op : \"golden\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{diff} / Verdict::Skipped{NeedsRecord}\" , effects : \"io (baseline read — declared, C6)\" , explainable : true , } , Row { op : \"differential\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{lhs,rhs} / Verdict::Skipped{BackendUnavailable}\" , effects : \"none / io per backend (declared, C6)\" , explainable : true , } , Row { op : \"summarize\" , tag : GuaranteeStrength :: Exact , fallibility : \"total\" , effects : \"none\" , explainable : true , } , Row { op : \"is_green\" , tag : GuaranteeStrength :: Exact , fallibility : \"total\" , effects : \"none\" , explainable : true , } ,] ;",
+      "reason": "top-level `const MATRIX` — co-emit (ORACLE-R1 A4) only covers plain unsigned integer types (`u8`/`u16`/`u32`/`u64`/`u128`/`usize`); other types have no const item production and no faithful zero-arg-fn encoding (gap, never fabricate)",
+      "item_name": "MATRIX"
+    }
+  ],
+  "total_top_level_items": 3
+}

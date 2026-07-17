@@ -1,0 +1,162 @@
+// nodule: std.testing
+// `std.testing` — the repo's verification discipline as a library (M-534, #174).
+//
+// Property / golden / differential test harness. The **honesty crux** is C1/G2 turned on the
+// test report itself: **a skipped or undetermined check is *reported*, never a silent pass** —
+// a test that could not run produces an explicit [`Verdict::Skipped`] that aggregates distinctly
+// from [`Verdict::Pass`], so "green" can never silently include "did not actually check".
+//
+// # What this module provides
+// - **[`for_all`]** — property testing: a bound for every guarantee, shrink to minimal
+//   counterexample, reproducible by seed. A passing property backs an `Empirical` claim;
+//   the harness **never upgrades** that to `Proven` (VR-5).
+// - **[`golden`]** — snapshot / golden-file testing: compare a produced value against a
+//   content-addressed stored baseline. A missing baseline is [`Verdict::Skipped`] with
+//   [`SkipReason::NeedsRecord`], **never** a silent auto-accept (C1/G2).
+// - **[`differential`]** — oracle testing: run the same input through two implementations
+//   and require observable agreement (M-151/M-210; NFR-7). An unavailable backend yields
+//   [`Verdict::Skipped`] with [`SkipReason::BackendUnavailable`], never a silent pass.
+// - **[`summarize`] / [`is_green`]** — the honest aggregator: `Skipped`/`Undetermined` counts
+//   stay **distinct** from `Pass`; "green" means *checked and passed*, never *did not check*.
+//
+// # Guarantee matrix
+// All ops are `Exact` *as mechanisms* (a verdict is an exact, deterministic function of the run).
+// The harness **never inflates the subject's tag**: a passing `for_all` backs `Empirical`, not
+// `Proven` (VR-5). See [`guarantee_matrix::MATRIX`] and its tests.
+//
+// # §4.1 contract conformance
+// - **C1 — never-silent (G2):** Skip/undetermined are first-class variants, not absence.
+// - **C2 — honest per-op tag (VR-5):** harness ops are `Exact` mechanisms; subject tag is not
+//   inflated.
+// - **C3 — no black boxes (SC-3/G11):** every non-`Pass` verdict is a reified inspectable
+//   artifact.
+// - **C4 — content-addressed, value-semantic (ADR-003/RFC-0001):** golden baselines are
+//   content-addressed; verdicts are immutable values; seeded runs are pure.
+// - **C5 — above the small kernel (KC-3):** adds no trusted code; checks the trusted base.
+// - **C6 — declared, bounded effects (RFC-0014):** property runs declare their trial budget;
+//   golden declares baseline IO; seeded generator is pure (RT3).
+//
+// # FLAGs (propagate to orchestrator / spec ratification)
+// - **FLAG-DIAG (RESOLVED):** `Fail` carries a structured diagnostic record. `std.diag` (M-510)
+//   has landed; [`FailRecord::to_diag`] projects to the canonical [`mycelium_diag::Diag`] record.
+//   `FailRecord` keeps testing-specific reproduction metadata (seed + trial index) and folds them
+//   into the `Diag`'s notes — delegating presentation to `std.diag`, not duplicating it (KC-3).
+// - **FLAG-Q5:** The differential harness adopts the §8-Q5 two-level bar (observable-result
+//   equivalence floor + per-module tag/EXPLAIN equivalence for honesty-load-bearing modules).
+//   The exact ratified definition lives in RFC-0016 §8-Q5 (RESOLVED per README §5). This
+//   implementation provides the observable-equality floor; the tag/EXPLAIN level is deferred
+//   pending fuller `std.diag` integration at the differential test call sites.
+// - **FLAG-WORKSPACE:** The workspace `Cargo.toml` was updated to add `crates/mycelium-std-testing`
+//   as a member. This is a parent-owned file; the orchestrator should verify this addition.
+//
+// # Design spec
+// `docs/spec/stdlib/testing.md` (M-534, #174).
+//
+// ## Ambient Representation (RFC-0012 §8-Q3)
+//
+// This crate's public API participates in the RFC-0012 ambient-representation contract:
+// the representation choice (binary/ternary/dense/VSA) is implicit at the call site but
+// always reified, queryable, and EXPLAIN-able — never a black box (C3/SC-3).
+// [Declared per RFC-0012; direction accepted in DN-07 §8-Q3; per-ring pass scheduled as M-540.]
+//
+// **For this crate (Ring 2, Tier B):** Test assertions carry representation context — a
+// representation mismatch between expected and actual values is a [`Verdict::Fail`], never a
+// silent coercion. The differential harness (NFR-7) checks observable-result equivalence across
+// representations; a tag or `Repr` mismatch is a first-class failure, not a silent pass.
+//
+// # Stability (DN-66 freeze, 2026-07-01)
+//
+// This crate's public API, as documented in `docs/spec/stdlib/testing.md` (spec status:
+// Accepted (2026-06-20)) and asserted by its guarantee-matrix table, is the **frozen baseline** per
+// [DN-66](../../../docs/notes/DN-66-Stdlib-Stable-API-Freeze-And-Rust-Crate-Retirement-Status.md).
+// A future breaking change here needs a spec amendment + changelog entry, not a silent edit (G2).
+//
+// **Unfrozen for the gap-closure window (ADR-045, Accepted 2026-07-10):** this DN-66 freeze is
+// lifted per [ADR-045](../../../docs/adr/ADR-045-Kernel-And-Lexicon-Unfreeze-For-Early-Gap-Closure.md)
+// for a bounded window; a breaking change here still needs a spec amendment + changelog entry
+// (G2), not a silent edit — the window closes per the ADR-045 §2.4 re-freeze conditions, bound by
+// the DN-99 residual worklist.
+// It remains the RFC-0031 D6 differential-oracle reference; no `.myc` port of this module exists yet, so the D6 retirement trigger has not fired and no item here is `#[deprecated]`.
+// @summary: best-effort transpilation via mycelium-transpile (M-873). Declared,
+// unvalidated — no Mycelium parser/typechecker confirms this output; see the
+// accompanying .gap.json for every construct this pass could not express.
+nodule std.testing;
+
+// Declared: ambient Option type co-emit — oracle self-containment (G-α Rank-1 / L2-A). Type shape cites lib/std/option.myc (Some/None sum); combinators are NOT fabricated (VR-5/G2). Checker does not seed Option as prelude (unlike Bool/Unit unconditional, Vec conditional).
+type Option[A] = Some(A) | None;
+
+// EXPLAIN (L2-B/DN-124): Declared co-include of batch-sibling type surface (homes: std.testing.verdict) so single-file oracle is self-contained — not a language `use` identity, not a short-form path collapse (M-1084 full path retained as provenance). Transitive type deps in the same batch are co-included. G2/VR-5.
+type FailRecord = FailRecord(Bytes, Binary{64}, Binary{32}, Bytes);
+type SkipReason = Ignored | UnmetPrecondition | NeedsRecord | BackendUnavailable | ToolMissing;
+type Summary = Summary(Binary{32}, Binary{32}, Binary{32}, Binary{32});
+type UndetReason = OracleUnavailable | BudgetExhaustedInconclusive | NonDeterministicInput;
+type Verdict = Pass | Fail(FailRecord) | Skipped(SkipReason) | Undetermined(UndetReason);
+
+// A deterministic, seeded pseudo-random generator for property-test inputs (RT3 / C6).
+//
+// Uses a Xorshift64 LCG — trivial but sufficient for reproducible input generation in a
+// no-external-randomness context (the `std.rand` seeded surface discipline, spec §2).
+// Deterministic: the same seed always produces the same sequence.
+//
+// **FLAG-RAND:** When `std.rand` (M-531) lands, this should be replaced or delegated to the
+// seeded generator surface it provides. The API contract (seed-in, deterministic sequence out,
+// no undeclared entropy) will not change.
+type Rng = Rng(Binary{64});
+
+impl Show[Rng] for Rng {
+  fn render(x: Rng) => Bytes =
+    match x { Rng(p0) => bytes_concat(bytes_concat("Rng(", render(p0)), ")") };
+};
+
+impl Rng {
+  // Construct a generator from a fixed seed (RT3: no undeclared entropy).
+  //
+  // A seed of `0` is promoted to a non-zero default to avoid a degenerate Xorshift state.
+  // Declared: renamed `impl Rng { fn new }` -> `_3Rng3new` (D4 inherent-impl flat-fn desugar + DN-140 length-prefix mangle, M-664).
+  fn _3Rng3new(seed: Binary{64}) => Rng = let state = if (match eq(seed, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000) { 0b1 => True, _ => False }) then 16045690984503055159 else seed in Rng(state);
+};
+
+// A declared, bounded trial budget for a property run (C6 — effects are bounded).
+//
+// A property cannot run with an unbounded budget; the `Budget` enforces a finite trial count.
+// The minimum is 1; creating a `Budget(0)` is refused (C1 — never silent).
+type Budget = Budget(Binary{32});
+
+impl Show[Budget] for Budget {
+  fn render(x: Budget) => Bytes =
+    match x { Budget(p0) => bytes_concat(bytes_concat("Budget(", render(width_cast(p0, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000))), ")") };
+};
+
+fn eq_Budget(a: Budget, b: Budget) => Binary{1} =
+    match a { Budget(p0) => match b { Budget(q0) => eq(p0, q0) } };
+
+impl Ord3[Budget] for Budget {
+  fn cmp(a: Budget, b: Budget) => Binary{8} =
+    match a { Budget(p0) => match b { Budget(q0) => cmp(width_cast(p0, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000), width_cast(q0, 0b0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000)) } };
+};
+
+impl Budget {
+  // Create a budget from a trial count. Returns `None` if `trials == 0` (C1 — never-silent).
+  // Declared: renamed `impl Budget { fn new }` -> `_6Budget3new` (D4 inherent-impl flat-fn desugar + DN-140 length-prefix mangle, M-664).
+  fn _6Budget3new(trials: Binary{32}) => Option[Budget] = if (match eq(trials, 0b0000_0000_0000_0000_0000_0000_0000_0000) { 0b1 => True, _ => False }) then None else Some(Budget(trials));
+  // The number of trials this budget permits.
+  fn trials(self: Budget) => Binary{32} = (match self { Budget(p0) => p0 });
+};
+
+// A golden baseline: an identifier (the "name") and its expected serialized form.
+//
+// Golden baselines are **content-addressed** by the combination of `name` + `expected` text
+// (C4/ADR-003). The `name` is a human-readable label; the `expected` is the stored snapshot.
+//
+// **FLAG-IO:** In a full implementation, golden baselines would be persisted to the filesystem
+// and the IO effect declared on the op. Here, baselines are supplied at call time (no filesystem
+// dep in this Ring-2 library), matching the spec's "test library, not the runner" boundary.
+type GoldenBaseline = GoldenBaseline(Bytes, Bytes);
+
+impl Show[GoldenBaseline] for GoldenBaseline {
+  fn render(x: GoldenBaseline) => Bytes =
+    match x { GoldenBaseline(p0, p1) => bytes_concat(bytes_concat(bytes_concat(bytes_concat("GoldenBaseline(", render(p0)), ", "), render(p1)), ")") };
+};
+
+fn eq_GoldenBaseline(a: GoldenBaseline, b: GoldenBaseline) => Binary{1} =
+    match a { GoldenBaseline(p0, p1) => match b { GoldenBaseline(q0, q1) => and(bytes_eq(p0, q0), bytes_eq(p1, q1)) } };

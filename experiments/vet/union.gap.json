@@ -1,0 +1,710 @@
+{
+  "gaps": [
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 80,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "use mycelium_core :: cert_mode :: CertMode ;",
+      "reason": "`use mycelium_core.cert_mode::CertMode` — `mycelium_core.cert_mode` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 81,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "use mycelium_proj :: { resolve_mode , ResolvedMode } ;",
+      "reason": "`use mycelium_proj::resolve_mode` — `mycelium_proj` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2); `use mycelium_proj::ResolvedMode` — `mycelium_proj` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 87,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "pub use mycelium_proj :: CertDecl ;",
+      "reason": "`use mycelium_proj::CertDecl` — `mycelium_proj` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 88,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "pub use mycelium_proj :: CertScope ;",
+      "reason": "`use mycelium_proj::CertScope` — `mycelium_proj` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 94,
+      "col": 1,
+      "category": "Struct",
+      "rust_construct": "Struct",
+      "snippet": "# [doc = \" A typed predicate set describing in which [`CertMode`] tiers a property is expected to hold.\"] # [doc = \"\"] # [doc = \" This is the first-class representation of the cross-mode scope declaration from RFC-0034 §13:\"] # [doc = \" a test/suite *declares its intended scope*, and the harness checks both directions — the\"] # [doc = \" property fires where it applies **and** is correctly absent where it does not.\"] # [doc = \"\"] # [doc = \" ## Predefined scopes (the common RFC-0034 cases)\"] # [doc = \" - [`ALL_MODES`](ModeScope::ALL_MODES): property holds in every mode (e.g. never-silent\"] # [doc = \"   fallibility, cert_mode tag presence — Axis-B invariants).\"] # [doc = \" - [`FAST_ONLY`](ModeScope::FAST_ONLY): property holds only in `Fast` (e.g. the guarantee\"] # [doc = \"   floor from `Proven`/`Empirical` to `Declared`, cert suppression).\"] # [doc = \" - [`NON_FAST`](ModeScope::NON_FAST): `Balanced` + `Certified` — modes where the certification\"] # [doc = \"   machinery runs and `Empirical`/`Proven` tags are reachable (RFC-0034 §5). Alias:\"] # [doc = \"   [`EMIT_MODES`](ModeScope::EMIT_MODES).\"] # [doc = \" - [`CERTIFIED_ONLY`](ModeScope::CERTIFIED_ONLY): property holds only in `Certified` (e.g.\"] # [doc = \"   certificate *checking*).\"] # [doc = \"\"] # [doc = \" ## Custom scopes\"] # [doc = \" Build with `ModeScope { in_scope: [fast_in, balanced_in, certified_in] }` — the bool array\"] # [doc = \" is indexed `[Fast=0, Balanced=1, Certified=2]`, matching [`CertMode::ALL`] order.\"] # [doc = \"\"] # [doc = \" ## Scope × scope composition\"] # [doc = \" `ModeScope` is `Copy` and composable: `ModeScope::union` / `ModeScope::intersect` let you build\"] # [doc = \" derived scopes without naming all booleans.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Declared`\"] # [doc = \" A `ModeScope` is a declaration, not a checked theorem. The harness checks conformance against\"] # [doc = \" the declared scope, but whether the scope is the *right* scope for the property is the test\"] # [doc = \" author's responsibility.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub struct ModeScope { # [doc = \" `in_scope[i]` = true means `CertMode::ALL[i]` is in scope. Indices: 0=Fast, 1=Balanced,\"] # [doc = \" 2=Certified — the same order as [`CertMode::ALL`] (Fast `depth()=0` … Certified `depth()=2`).\"] pub in_scope : [bool ; 3] , }",
+      "reason": "struct `ModeScope` has a field type with no confirmed mapping (unsupported Rust type form `[bool ; 3]`)",
+      "item_name": "ModeScope"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 130,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl ModeScope { # [doc = \" Property holds in **every** mode — the unconditional scope (e.g. Axis-B never-silent\"] # [doc = \" fallibility, cert_mode tag presence). In scope: Fast, Balanced, Certified.\"] pub const ALL_MODES : ModeScope = ModeScope { in_scope : [true , true , true] , } ; # [doc = \" Property holds **only in `Fast`** (e.g. the floor from `Proven`/`Empirical` to `Declared`,\"] # [doc = \" cert suppression in Fast). In scope: Fast only.\"] pub const FAST_ONLY : ModeScope = ModeScope { in_scope : [true , false , false] , } ; # [doc = \" Property holds in **`Balanced` and `Certified`** — the modes where the certification\"] # [doc = \" machinery runs and `Empirical`/`Proven` tags are reachable (RFC-0034 §5). Alias:\"] # [doc = \" [`EMIT_MODES`](ModeScope::EMIT_MODES). In scope: Balanced, Certified.\"] pub const NON_FAST : ModeScope = ModeScope { in_scope : [false , true , true] , } ; # [doc = \" Property holds **only in `Certified`** (e.g. certificate *checking*, RFC-0034 §5 Axis-C).\"] # [doc = \" In scope: Certified only.\"] pub const CERTIFIED_ONLY : ModeScope = ModeScope { in_scope : [false , false , true] , } ; # [doc = \" Property holds in **`Balanced` and `Certified`** — the modes that *emit* swap certificates\"] # [doc = \" (RFC-0034 §5). Alias for [`NON_FAST`](ModeScope::NON_FAST). In scope: Balanced, Certified.\"] pub const EMIT_MODES : ModeScope = ModeScope { in_scope : [false , true , true] , } ; # [doc = \" Property holds only in `Balanced` (e.g. a balanced-specific cost/precision tradeoff).\"] # [doc = \" In scope: Balanced only.\"] pub const BALANCED_ONLY : ModeScope = ModeScope { in_scope : [false , true , false] , } ; # [doc = \" Returns `true` iff the given mode is in scope.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn contains (self , mode : CertMode) -> bool { self . in_scope [mode . depth () as usize] } # [doc = \" The set of modes **in** scope (at most 3 elements, in `CertMode::ALL` order).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total (always returns a `Vec` of 0..=3 elements)\"] # [must_use] pub fn modes_in_scope (self) -> Vec < CertMode > { CertMode :: ALL . iter () . copied () . filter (| & m | self . contains (m)) . collect () } # [doc = \" The set of modes **outside** scope (the complement; at most 3 elements).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn modes_out_of_scope (self) -> Vec < CertMode > { CertMode :: ALL . iter () . copied () . filter (| & m | ! self . contains (m)) . collect () } # [doc = \" The number of modes in scope (0..=3).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [must_use] pub fn count (self) -> usize { self . in_scope . iter () . filter (| & & b | b) . count () } # [doc = \" `true` iff the scope is empty (no modes — a scope with nothing in it is a no-op but\"] # [doc = \" surfaced explicitly, not silently ignored — C1/G2).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [must_use] pub fn is_empty (self) -> bool { self . count () == 0 } # [doc = \" The union of two scopes: a mode is in scope if it is in *either* scope.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn union (self , other : ModeScope) -> ModeScope { ModeScope { in_scope : [self . in_scope [0] || other . in_scope [0] , self . in_scope [1] || other . in_scope [1] , self . in_scope [2] || other . in_scope [2] ,] , } } # [doc = \" The intersection of two scopes: a mode is in scope only if it is in *both* scopes.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn intersect (self , other : ModeScope) -> ModeScope { ModeScope { in_scope : [self . in_scope [0] && other . in_scope [0] , self . in_scope [1] && other . in_scope [1] , self . in_scope [2] && other . in_scope [2] ,] , } } # [doc = \" Build a `ModeScope` from the effective mode of a [`ResolvedMode`]: the scope is \\\"exactly\"] # [doc = \" the modes at or above the resolved depth\\\" — i.e., `Fast` resolves to `ALL_MODES`,\"] # [doc = \" `Balanced` to `NON_FAST`, `Certified` to `CERTIFIED_ONLY`.\"] # [doc = \"\"] # [doc = \" This is the bridge between the `@certification` resolver and the `ModeScope` predicate:\"] # [doc = \" a `@certification: balanced` declaration means \\\"this test cares about Balanced and\"] # [doc = \" Certified behaviour\\\", not \\\"this test only runs in Balanced\\\".\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [doc = \"\"] # [doc = \" **Mutant-witness:** if `from_resolved_mode(Balanced)` returned `CERTIFIED_ONLY`, a\"] # [doc = \" Balanced-scoped test would fail to check Balanced behaviour, and `modes_in_scope()` would\"] # [doc = \" return `[Certified]` instead of `[Balanced, Certified]`.\"] # [must_use] pub fn from_resolved_mode (r : & ResolvedMode) -> ModeScope { match r . mode { CertMode :: Fast => ModeScope :: ALL_MODES , CertMode :: Balanced => ModeScope :: NON_FAST , CertMode :: Certified => ModeScope :: CERTIFIED_ONLY , } } }",
+      "reason": "no member of this impl block could be transpiled (14 sub-issue(s)): impl associated const `ALL_MODES`; impl associated const `FAST_ONLY`; impl associated const `NON_FAST`; impl associated const `CERTIFIED_ONLY`; impl associated const `EMIT_MODES`; impl associated const `BALANCED_ONLY`; impl method `contains` body: unsupported expression form `self . in_scope [mode . depth () as usize]`; impl method `modes_in_scope` body: method call `.collect(...)` has no proven-emitted free-fn referent in this file (neither a D4-mangled inherent `Type__collect` nor a bare inherent recorded by this file's left-to-right pass, nor a prim_map / combinator row). Emitting bare `collect(recv, …)` would fabricate an unknown prim and file-poison myc-check (G-β Rank A / G2/VR-5; residual when the method body itself gapped — e.g. M-1037 `.to_vec()` inside `read_to_end` — so the declaration was never registered); impl method `modes_out_of_scope` body: method call `.collect(...)` has no proven-emitted free-fn referent in this file (neither a D4-mangled inherent `Type__collect` nor a bare inherent recorded by this file's left-to-right pass, nor a prim_map / combinator row). Emitting bare `collect(recv, …)` would fabricate an unknown prim and file-poison myc-check (G-β Rank A / G2/VR-5; residual when the method body itself gapped — e.g. M-1037 `.to_vec()` inside `read_to_end` — so the declaration was never registered); impl method `count` body: method call `.count(...)` has no proven-emitted free-fn referent in this file (neither a D4-mangled inherent `Type__count` nor a bare inherent recorded by this file's left-to-right pass, nor a prim_map / combinator row). Emitting bare `count(recv, …)` would fabricate an unknown prim and file-poison myc-check (G-β Rank A / G2/VR-5; residual when the method body itself gapped — e.g. M-1037 `.to_vec()` inside `read_to_end` — so the declaration was never registered); impl method `is_empty` body: method call `.count(...)` has no proven-emitted free-fn referent in this file (neither a D4-mangled inherent `Type__count` nor a bare inherent recorded by this file's left-to-right pass, nor a prim_map / combinator row). Emitting bare `count(recv, …)` would fabricate an unknown prim and file-poison myc-check (G-β Rank A / G2/VR-5; residual when the method body itself gapped — e.g. M-1037 `.to_vec()` inside `read_to_end` — so the declaration was never registered); impl method `union` body: struct literal `ModeScope { .. }` — not an in-file single-ctor struct or enum struct-variant that emits (no constructor to build; a cross-nodule variant is an honest DN-113/DN-134-OQ-2 resolvability gap, never a fabricated out-of-file reference — VR-5/G2); impl method `intersect` body: struct literal `ModeScope { .. }` — not an in-file single-ctor struct or enum struct-variant that emits (no constructor to build; a cross-nodule variant is an honest DN-113/DN-134-OQ-2 resolvability gap, never a fabricated out-of-file reference — VR-5/G2); impl method `from_resolved_mode` body: field access on a non-`self` base — the transpiler tracks no local types, so the projection cannot be resolved to a constructor position (only `self.<field>` desugars to a `match`)",
+      "item_name": "ModeScope"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 282,
+      "col": 1,
+      "category": "Struct",
+      "rust_construct": "Struct",
+      "snippet": "# [doc = \" Configurable per-test / per-suite mode scope, resolved most-specific-wins via the shared\"] # [doc = \" M-790 `resolve_mode` algorithm (RFC-0034 §6 / RFC-0012 ambient-override).\"] # [doc = \"\"] # [doc = \" The scope is built from a stack of `@certification` declarations at `Global`, `Phylum`,\"] # [doc = \" and `Nodule` scopes — the same three-tier lattice the `@certification` attribute uses in\"] # [doc = \" production code — plus an optional **granular** override that wins over all scope tiers.\"] # [doc = \" Resolution uses [`mycelium_proj::resolve_mode`] directly: the test scope and the production\"] # [doc = \" `@certification` attribute share one algorithm (no parallel implementation, no drift — KC-3).\"] # [doc = \"\"] # [doc = \" ## Building a config\"] # [doc = \" ```rust\"] # [doc = \" # use mycelium_std_testing::cert_mode_test::ModeTestConfig;\"] # [doc = \" # use mycelium_core::cert_mode::CertMode;\"] # [doc = \" # use mycelium_proj::{CertDecl, CertScope};\"] # [doc = \" // Project default: fast (standard for most tests).\"] # [doc = \" let default_config = ModeTestConfig::default();\"] # [doc = \"\"] # [doc = \" // Project-wide default of Balanced, overridden per-nodule to Certified:\"] # [doc = \" let config = ModeTestConfig::new(&[\"] # [doc = \"     CertDecl { scope: CertScope::Phylum, mode: CertMode::Balanced },\"] # [doc = \"     CertDecl { scope: CertScope::Nodule,  mode: CertMode::Certified },\"] # [doc = \" ]);\"] # [doc = \"\"] # [doc = \" // Granular per-test override — wins over all scope tiers:\"] # [doc = \" let narrow = config.with_granular(CertMode::Fast);\"] # [doc = \" ```\"] # [doc = \"\"] # [doc = \" ## Resolving to a `ModeScope`\"] # [doc = \" [`ModeTestConfig::resolve`] runs `resolve_mode` and maps the effective mode to a `ModeScope`\"] # [doc = \" via [`ModeScope::from_resolved_mode`].\"] # [doc = \"\"] # [doc = \" ## Provenance\"] # [doc = \" [`ModeTestConfig::provenance`] returns the `ResolvedMode` — the effective mode + which scope\"] # [doc = \" it came from — so the active test scope is never ambient (G2 / RFC-0012 renderability).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Declared` — a declaration, not a checked theorem (VR-5)\"] # [derive (Debug , Clone)] pub struct ModeTestConfig { # [doc = \" The `@certification` declarations at `Global`, `Phylum`, or `Nodule` scope. The resolver\"] # [doc = \" picks the most-specific winner; `Global` < `Phylum` < `Nodule` (RFC-0034 §6 lattice).\"] decls : Vec < CertDecl > , # [doc = \" An optional **granular** override that wins over all scope tiers — the per-test dial.\"] # [doc = \" `None` = no granular override (falls back to the `decls` resolution).\"] granular : Option < CertMode > , }",
+      "reason": "struct `ModeTestConfig` uses named fields and references a type not resolvable in-file — emitting it positionally would introduce an unresolved reference that poisons the file's `myc check`; left gapped under the M-1006 resolvability gate (VR-5/G2)",
+      "item_name": "ModeTestConfig"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 328,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl ModeTestConfig { # [doc = \" Build a `ModeTestConfig` from a slice of `@certification` scope declarations.\"] # [doc = \"\"] # [doc = \" Declarations are not ordered (the resolver picks the highest-specificity winner). Supply\"] # [doc = \" at most one per scope level (duplicates at the same scope are resolved by\"] # [doc = \" `resolve_mode`'s max-specificity fold — the **last** duplicate found wins, per\"] # [doc = \" `Iterator::max_by_key`'s documented tie behaviour (\\\"if several elements are equally\"] # [doc = \" maximum, the last element is returned\\\"); in practice, the `@certification` parser\"] # [doc = \" upstream rejects duplicates, so this is just the resolver's behaviour for robustness).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (pure construction)\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn new (decls : & [CertDecl]) -> Self { ModeTestConfig { decls : decls . to_vec () , granular : None , } } # [doc = \" Add (or replace) a **granular** per-test override — the most-specific tier, overrides\"] # [doc = \" all scope declarations in [`ModeTestConfig::new`].\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn with_granular (mut self , mode : CertMode) -> Self { self . granular = Some (mode) ; self } # [doc = \" The provenance of the resolved test mode — the effective mode and the scope it came from.\"] # [doc = \"\"] # [doc = \" `source: None` means no declaration matched and the project default\"] # [doc = \" ([`CertMode::default`] = `Fast`) is in effect. `source: Some(CertScope::Nodule)` means a\"] # [doc = \" nodule-wide header won. When [`with_granular`](ModeTestConfig::with_granular) is set, the\"] # [doc = \" provenance reflects the granular override with `source: None` (the granular tier is not\"] # [doc = \" a `CertScope` level — it is above the lattice and wins unconditionally).\"] # [doc = \"\"] # [doc = \" The provenance is available for `EXPLAIN` rendering: a test that does not know which tiers\"] # [doc = \" ran can inspect the `ResolvedMode` and surface the scope decision (never ambient — G2).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [must_use] pub fn provenance (& self) -> ResolvedMode { if let Some (g) = self . granular { return ResolvedMode { mode : g , source : None , } ; } resolve_mode (& self . decls) } # [doc = \" Resolve the effective `ModeScope` for this test/suite configuration.\"] # [doc = \"\"] # [doc = \" Uses [`ModeScope::from_resolved_mode`] on the [`provenance`](ModeTestConfig::provenance)\"] # [doc = \" result — so the mapping from `@certification` mode to test scope is canonical and shared.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (pure, deterministic)\"] # [doc = \" # Fallibility: total\"] # [doc = \"\"] # [doc = \" **EXPLAIN:** call [`ModeTestConfig::provenance`] on the same config to see which scope\"] # [doc = \" tier produced the effective mode (never ambient — G2 / RFC-0012 renderability).\"] # [must_use] pub fn resolve (& self) -> ModeScope { ModeScope :: from_resolved_mode (& self . provenance ()) } }",
+      "reason": "no member of this impl block could be transpiled (4 sub-issue(s)): impl method `new` body: struct literal `ModeTestConfig { .. }` — not an in-file single-ctor struct or enum struct-variant that emits (no constructor to build; a cross-nodule variant is an honest DN-113/DN-134-OQ-2 resolvability gap, never a fabricated out-of-file reference — VR-5/G2); impl method `with_granular` body: function body has a semicolon-terminated (value-discarding) statement expression before the tail — a `let`-chain body maps only simple `let x = e;` bindings plus a single trailing expression; impl method `provenance` body: function body has a semicolon-terminated (value-discarding) statement expression before the tail — a `let`-chain body maps only simple `let x = e;` bindings plus a single trailing expression; impl method `resolve` body: qualified/associated-function call `ModeScope :: from_resolved_mode` did not resolve to a known-emitted associated fn — Mycelium calls are bare identifiers, and the only sound surface form for `Type::method(...)` is the mangled `Type__method` name the declaration side already emits for a receiver-less inherent-impl associated fn (DN-34 §8.13/8.14), referenced only when that exact declaration is PROVEN present (same-file, or a resolved M-1084 cross-nodule sibling). A primitive/std associated fn with no emitted decl (e.g. `i128::try_from`), an unresolved type, or a `self`-receiving method (excluded by construction — it stays reachable only from its own bare call site) all gap here rather than fabricate a call (G2/VR-5, DN-133)",
+      "item_name": "ModeTestConfig"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 401,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl Default for ModeTestConfig { # [doc = \" Default configuration: no declarations → project default `Fast` → `ALL_MODES` scope.\"] # [doc = \"\"] # [doc = \" This is the sensible default (RFC-0034 §13: \\\"a mode-sensitive unit covers the tiers whose\"] # [doc = \" behaviour differs, plus the negatives\\\"): a test with no `@certification` context runs\"] # [doc = \" across all tiers. Widening from `fast` is always safe.\"] fn default () -> Self { ModeTestConfig { decls : vec ! [] , granular : None , } } }",
+      "reason": "no member of this impl block could be transpiled (1 sub-issue(s)): impl method `default` body: struct literal `ModeTestConfig { .. }` — not an in-file single-ctor struct or enum struct-variant that emits (no constructor to build; a cross-nodule variant is an honest DN-113/DN-134-OQ-2 resolvability gap, never a fabricated out-of-file reference — VR-5/G2)",
+      "item_name": "ModeTestConfig"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 419,
+      "col": 1,
+      "category": "Struct",
+      "rust_construct": "Struct",
+      "snippet": "# [doc = \" A summary of which `CertMode` tiers were visited and which were skipped by\"] # [doc = \" [`for_each_mode_in`].\"] # [doc = \"\"] # [doc = \" Carries the never-silent audit: the caller can assert that the expected tiers ran and the\"] # [doc = \" right tiers were skipped. A test that only \\\"happened to\\\" cover the in-scope modes without\"] # [doc = \" explicitly checking the out-of-scope modes gets no false confidence (C1/G2).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Declared` — a record of what ran; not a verdict on correctness.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct ModeVisit { # [doc = \" The modes that were visited (in `CertMode::ALL` order).\"] pub visited : Vec < CertMode > , # [doc = \" The modes that were skipped because they were outside the scope (in `CertMode::ALL` order).\"] pub skipped : Vec < CertMode > , }",
+      "reason": "struct `ModeVisit` uses named fields and references a type not resolvable in-file — emitting it positionally would introduce an unresolved reference that poisons the file's `myc check`; left gapped under the M-1006 resolvability gate (VR-5/G2)",
+      "item_name": "ModeVisit"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 435,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl ModeVisit { # [doc = \" `true` iff the visit covered all three modes (regardless of scope — useful for asserting\"] # [doc = \" that the full sweep happened).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [must_use] pub fn visited_all (& self) -> bool { self . visited . len () == CertMode :: ALL . len () } # [doc = \" `true` iff the visit covered exactly the given scope (no more, no fewer modes visited).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [must_use] pub fn matches_scope (& self , scope : ModeScope) -> bool { let expected : Vec < CertMode > = scope . modes_in_scope () ; self . visited == expected } }",
+      "reason": "no member of this impl block could be transpiled (2 sub-issue(s)): impl method `visited_all` body: method call `.len(...)` has no proven-emitted free-fn referent in this file (neither a D4-mangled inherent `Type__len` nor a bare inherent recorded by this file's left-to-right pass, nor a prim_map / combinator row). Emitting bare `len(recv, …)` would fabricate an unknown prim and file-poison myc-check (G-β Rank A / G2/VR-5; residual when the method body itself gapped — e.g. M-1037 `.to_vec()` inside `read_to_end` — so the declaration was never registered); impl method `matches_scope` body: `let` binding uses an unsupported pattern (only simple `let x = e;` is supported)",
+      "item_name": "ModeVisit"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 455,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" Run `f(mode)` for **every** mode in [`CertMode::ALL`] (weakest → strongest: Fast, Balanced,\"] # [doc = \" Certified).\"] # [doc = \"\"] # [doc = \" The simplest entry point for mode-parametric tests: the property is checked across the full\"] # [doc = \" tier sweep. Use [`for_each_mode_in`] if you need scope filtering; use [`assert_mode_scope`]\"] # [doc = \" if you also need the cross-mode negative check.\"] # [doc = \"\"] # [doc = \" Never-silent: all three modes are always visited. There is no way to \\\"skip a mode\\\" through\"] # [doc = \" this function (use `ModeScope` + `for_each_mode_in` for that).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (visits exactly the three modes in `CertMode::ALL` order)\"] # [doc = \" # Fallibility: total (panics only if `f` panics)\"] # [doc = \" # Effects: none (pure; the side-effects live in `f`)\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The visited tiers are `CertMode::ALL` — always `[Fast, Balanced, Certified]`. No filtering.\"] pub fn for_each_mode (mut f : impl FnMut (CertMode)) { for & mode in & CertMode :: ALL { f (mode) ; } }",
+      "reason": "unsupported Rust type form `impl FnMut (CertMode)`",
+      "item_name": "for_each_mode"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 477,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" Run `f(mode)` for each mode **in** `scope`, returning a [`ModeVisit`] that records which\"] # [doc = \" modes were visited and which were skipped.\"] # [doc = \"\"] # [doc = \" The caller can assert `visit.matches_scope(scope)` to confirm the right set ran, and inspect\"] # [doc = \" `visit.skipped` to see which modes were out of scope (never silently absent — C1/G2).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total (panics only if `f` panics)\"] # [doc = \" # Effects: none\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" `ModeVisit` carries the full visited/skipped split — the caller can inspect it at any\"] # [doc = \" verbosity level. The split is deterministic: `scope` fully determines which modes are in\"] # [doc = \" `visited` vs `skipped`.\"] pub fn for_each_mode_in (scope : ModeScope , mut f : impl FnMut (CertMode)) -> ModeVisit { let mut visited = Vec :: new () ; let mut skipped = Vec :: new () ; for & mode in & CertMode :: ALL { if scope . contains (mode) { f (mode) ; visited . push (mode) ; } else { skipped . push (mode) ; } } ModeVisit { visited , skipped } }",
+      "reason": "unsupported Rust type form `impl FnMut (CertMode)`",
+      "item_name": "for_each_mode_in"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 511,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" Assert that `predicate(mode)` returns **`true`** for every mode in `scope` and **`false`**\"] # [doc = \" for every mode **outside** scope — the cross-mode **negative** pattern (RFC-0034 §13).\"] # [doc = \"\"] # [doc = \" This is the mechanical implementation of the conformance contract: it catches **both**\"] # [doc = \" (a) the property not holding when it should (positive failure), and (b) the property holding\"] # [doc = \" when it should not (\\\"invariant fires where it doesn't apply\\\" — the negative failure that a\"] # [doc = \" simple `assert!` cannot catch).\"] # [doc = \"\"] # [doc = \" `desc` is a human-readable description of the property, included in panic messages (EXPLAIN\"] # [doc = \" artifact — C3/G11).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: panics on mismatch (the harness's \\\"never-silent\\\" is a panic, not a Verdict,\"] # [doc = \"   so the failure is immediately surfaced in the test runner — consistent with Rust's test\"] # [doc = \"   model)\"] # [doc = \" # Effects: none (pure; side-effects live in `predicate`)\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" A positive panic reports: which mode, the declared scope, and the description.\"] # [doc = \" A negative panic reports: which mode (in scope but predicate false), the declared scope,\"] # [doc = \" and the description.\"] # [doc = \"\"] # [doc = \" **Mutant-witness for the negative arm:** if `predicate` always returns `true` (an invariant\"] # [doc = \" that holds everywhere) and the scope is `FAST_ONLY`, the negative arm fires for `Balanced`\"] # [doc = \" and `Certified`, catching the over-broad invariant. Conversely, if `predicate` always returns\"] # [doc = \" `false`, the positive arm fires for `Fast`, catching the absent invariant.\"] # [doc = \"\"] # [doc = \" # Example\"] # [doc = \" ```rust\"] # [doc = \" # use mycelium_std_testing::cert_mode_test::{ModeScope, assert_mode_scope};\"] # [doc = \" # use mycelium_core::cert_mode::CertMode;\"] # [doc = \" // Fast is the only mode that floors Proven to Declared:\"] # [doc = \" assert_mode_scope(\"] # [doc = \"     ModeScope::FAST_ONLY,\"] # [doc = \"     |mode| mode == CertMode::Fast,\"] # [doc = \"     \\\"Fast is the mode that applies the floor\\\",\"] # [doc = \" );\"] # [doc = \" ```\"] pub fn assert_mode_scope (scope : ModeScope , predicate : impl Fn (CertMode) -> bool , desc : & str) { for & mode in & CertMode :: ALL { let holds = predicate (mode) ; let expected = scope . contains (mode) ; if holds && ! expected { panic ! (\"cross-mode NEGATIVE failed: `{desc}` holds in {mode:?} but scope={scope:?} \\\n                 says it should NOT. The invariant fires where it shouldn't (RFC-0034 §13).\") ; } if ! holds && expected { panic ! (\"cross-mode POSITIVE failed: `{desc}` does NOT hold in {mode:?} but scope={scope:?} \\\n                 says it SHOULD. The invariant is absent where it must fire (RFC-0034 §13).\") ; } } }",
+      "reason": "unsupported Rust type form `impl Fn (CertMode) -> bool`",
+      "item_name": "assert_mode_scope"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/cert_mode_test.rs",
+      "line": 568,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" Assert that `predicate(mode)` returns **`false`** for every mode **outside** `scope` — the\"] # [doc = \" negative-only half of the cross-mode negative pattern.\"] # [doc = \"\"] # [doc = \" Use this when you want to assert the **absence** of a property in the out-of-scope modes,\"] # [doc = \" without asserting the positive direction (you may have a separate positive check, e.g. the\"] # [doc = \" standard `assert!` in a mode-pinned test body). This is the \\\"invariant must be absent where\"] # [doc = \" it doesn't apply\\\" helper — the dual of a simple positive assertion.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: panics when `predicate(mode)` returns `true` for a mode outside scope.\"] # [doc = \" # Effects: none\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The panic carries the violating mode and the scope declaration (C3).\"] pub fn assert_mode_negative (scope : ModeScope , predicate : impl Fn (CertMode) -> bool , desc : & str) { for & mode in & CertMode :: ALL { if ! scope . contains (mode) && predicate (mode) { panic ! (\"cross-mode NEGATIVE failed: `{desc}` holds in {mode:?} but scope={scope:?} \\\n                 says it should NOT (property present outside its declared scope — RFC-0034 §13).\") ; } } }",
+      "reason": "unsupported Rust type form `impl Fn (CertMode) -> bool`",
+      "item_name": "assert_mode_negative"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 16,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "use mycelium_core :: GuaranteeStrength ;",
+      "reason": "`use mycelium_core::GuaranteeStrength` — `mycelium_core` is not a sibling module OR sibling phylum transpiled in this same batch (an external crate, `std`, or simply out of this batch's target set). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 18,
+      "col": 1,
+      "category": "Struct",
+      "rust_construct": "Struct",
+      "snippet": "# [doc = \" One row of the `std.testing` guarantee matrix.\"] # [doc = \"\"] # [doc = \" Mirrors the `GuaranteeRow` shape from `mycelium-std-core` (spec §4 / README §2) — kept\"] # [doc = \" local to avoid a circular crate dependency while `std.core` is not yet a dep.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub struct Row { # [doc = \" The exported op name.\"] pub op : & 'static str , # [doc = \" Guarantee tag on the `Exact ⊐ Proven ⊐ Empirical ⊐ Declared` lattice (RFC-0001 §4.3).\"] pub tag : GuaranteeStrength , # [doc = \" Explicit fallibility: `\\\"total\\\"` or the `Option`/`Result`/`Verdict` shape returned.\"] pub fallibility : & 'static str , # [doc = \" Declared effects (`\\\"none\\\"` for pure ops; `\\\"io (baseline read)\\\"` for golden).\"] pub effects : & 'static str , # [doc = \" Whether the op surfaces an EXPLAIN artifact (C3/SC-3/G11).\"] pub explainable : bool , }",
+      "reason": "struct `Row` uses named fields and references a type not resolvable in-file — emitting it positionally would introduce an unresolved reference that poisons the file's `myc check`; left gapped under the M-1006 resolvability gate (VR-5/G2)",
+      "item_name": "Row"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/guarantee_matrix.rs",
+      "line": 36,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" The `std.testing` guarantee matrix (spec §4).\"] # [doc = \"\"] # [doc = \" Every row is `Exact` (the verdict mechanism is exact) and either effect-free or declares\"] # [doc = \" its IO effect explicitly (C6). EXPLAIN coverage is on every harness op that produces a\"] # [doc = \" non-`Pass` verdict (C3).\"] # [doc = \"\"] # [doc = \" | Op | Tag | Fallibility | Effects | EXPLAIN |\"] # [doc = \" |---|---|---|---|---|\"] # [doc = \" | `for_all` | Exact | `Fail{Diag}` / `Skipped{...}` as Verdict | none (pure; seeded) | yes |\"] # [doc = \" | `golden` | Exact | `Fail{diff}` / `Skipped{NeedsRecord}` | io (baseline read) | yes |\"] # [doc = \" | `differential` | Exact | `Fail{lhs,rhs}` / `Skipped{BackendUnavailable}` | none / io per backend | yes |\"] # [doc = \" | `summarize` | Exact | total | none | yes |\"] # [doc = \" | `is_green` | Exact | total | none | yes |\"] pub const MATRIX : & [Row] = & [Row { op : \"for_all\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{record} / Verdict::Skipped{NeedsRecord}\" , effects : \"none (pure; seeded — C6/RT3)\" , explainable : true , } , Row { op : \"golden\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{diff} / Verdict::Skipped{NeedsRecord}\" , effects : \"io (baseline read — declared, C6)\" , explainable : true , } , Row { op : \"differential\" , tag : GuaranteeStrength :: Exact , fallibility : \"Verdict::Fail{lhs,rhs} / Verdict::Skipped{BackendUnavailable}\" , effects : \"none / io per backend (declared, C6)\" , explainable : true , } , Row { op : \"summarize\" , tag : GuaranteeStrength :: Exact , fallibility : \"total\" , effects : \"none\" , explainable : true , } , Row { op : \"is_green\" , tag : GuaranteeStrength :: Exact , fallibility : \"total\" , effects : \"none\" , explainable : true , } ,] ;",
+      "reason": "top-level `const MATRIX` — co-emit (ORACLE-R1 A4) only covers plain unsigned integer types (`u8`/`u16`/`u32`/`u64`/`u128`/`usize`); other types have no const item production and no faithful zero-arg-fn encoding (gap, never fabricate)",
+      "item_name": "MATRIX"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 1,
+      "col": 1,
+      "category": "InnerAttr",
+      "rust_construct": "InnerAttr",
+      "snippet": "# ! [forbid (unsafe_code)]",
+      "reason": "crate/file-level inner attributes (#![...]) are not transpiled (no nodule-header equivalent for these Rust-specific directives)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 81,
+      "col": 1,
+      "category": "ModuleDecl",
+      "rust_construct": "ModuleDecl",
+      "snippet": "pub mod cert_mode_test ;",
+      "reason": "external `mod foo;` declaration — file-linkage, not translatable library surface (Mycelium's nodule-per-file model makes the module tree implicit in the file layout; the sibling file transpiles as its own nodule). Excluded from the expressible-fraction denominator, recorded not dropped",
+      "item_name": "cert_mode_test"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 82,
+      "col": 1,
+      "category": "ModuleDecl",
+      "rust_construct": "ModuleDecl",
+      "snippet": "pub mod guarantee_matrix ;",
+      "reason": "external `mod foo;` declaration — file-linkage, not translatable library surface (Mycelium's nodule-per-file model makes the module tree implicit in the file layout; the sibling file transpiles as its own nodule). Excluded from the expressible-fraction denominator, recorded not dropped",
+      "item_name": "guarantee_matrix"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 83,
+      "col": 1,
+      "category": "ModuleDecl",
+      "rust_construct": "ModuleDecl",
+      "snippet": "pub mod verdict ;",
+      "reason": "external `mod foo;` declaration — file-linkage, not translatable library surface (Mycelium's nodule-per-file model makes the module tree implicit in the file layout; the sibling file transpiles as its own nodule). Excluded from the expressible-fraction denominator, recorded not dropped",
+      "item_name": "verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 85,
+      "col": 1,
+      "category": "Import",
+      "rust_construct": "Import",
+      "snippet": "pub use cert_mode_test :: { assert_mode_negative , assert_mode_scope , for_each_mode , for_each_mode_in , ModeScope , ModeTestConfig , ModeVisit , } ;",
+      "reason": "`use cert_mode_test::assert_mode_negative` — `assert_mode_negative` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::assert_mode_scope` — `assert_mode_scope` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::for_each_mode` — `for_each_mode` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::for_each_mode_in` — `for_each_mode_in` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::ModeScope` — `ModeScope` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::ModeTestConfig` — `ModeTestConfig` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2); `use cert_mode_test::ModeVisit` — `ModeVisit` is not among sibling `cert_mode_test`'s successfully-emitted surface in this batch (the sibling file itself gapped it rather than emitting it). Flagged, not guessed (VR-5/G2)",
+      "item_name": null
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 91,
+      "col": 1,
+      "category": "TestItem",
+      "rust_construct": "TestItem",
+      "snippet": "# [cfg (test)] mod tests ;",
+      "reason": "#[cfg(test)] item — out of scope for this PoC's transpilation surface (excluded from the expressible-fraction denominator, but recorded, never silently skipped)",
+      "item_name": "tests"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 96,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" A deterministic, seeded pseudo-random generator for property-test inputs (RT3 / C6).\"] # [doc = \"\"] # [doc = \" Uses a Xorshift64 LCG — trivial but sufficient for reproducible input generation in a\"] # [doc = \" no-external-randomness context (the `std.rand` seeded surface discipline, spec §2).\"] # [doc = \" Deterministic: the same seed always produces the same sequence.\"] # [doc = \"\"] # [doc = \" **FLAG-RAND:** When `std.rand` (M-531) lands, this should be replaced or delegated to the\"] # [doc = \" seeded generator surface it provides. The API contract (seed-in, deterministic sequence out,\"] # [doc = \" no undeclared entropy) will not change.\"] # [derive (Debug , Clone)] pub struct Rng { state : u64 , }",
+      "reason": "struct `Rng` named field(s) `state` emitted positionally as `Rng(Binary{64})` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped (matches `lib/std/*.myc` hand-ports)",
+      "item_name": "Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 96,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" A deterministic, seeded pseudo-random generator for property-test inputs (RT3 / C6).\"] # [doc = \"\"] # [doc = \" Uses a Xorshift64 LCG — trivial but sufficient for reproducible input generation in a\"] # [doc = \" no-external-randomness context (the `std.rand` seeded surface discipline, spec §2).\"] # [doc = \" Deterministic: the same seed always produces the same sequence.\"] # [doc = \"\"] # [doc = \" **FLAG-RAND:** When `std.rand` (M-531) lands, this should be replaced or delegated to the\"] # [doc = \" seeded generator surface it provides. The API contract (seed-in, deterministic sequence out,\"] # [doc = \" no undeclared entropy) will not change.\"] # [derive (Debug , Clone)] pub struct Rng { state : u64 , }",
+      "reason": "struct `Rng` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 110,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "impl Rng { # [doc = \" Construct a generator from a fixed seed (RT3: no undeclared entropy).\"] # [doc = \"\"] # [doc = \" A seed of `0` is promoted to a non-zero default to avoid a degenerate Xorshift state.\"] # [must_use] pub fn new (seed : u64) -> Self { let state = if seed == 0 { 0xDEAD_BEEF_CAFE_1337 } else { seed } ; Self { state } } # [doc = \" Advance the state and return the next `u64` (Xorshift64).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" Deterministic; same state always yields same output (C4 / RT3).\"] pub fn next_u64 (& mut self) -> u64 { let mut x = self . state ; x ^= x << 13 ; x ^= x >> 7 ; x ^= x << 17 ; self . state = x ; x } # [doc = \" Advance and return a `u32`.\"] pub fn next_u32 (& mut self) -> u32 { (self . next_u64 () >> 32) as u32 } # [doc = \" Advance and return a value in `[0, n)`. Panics if `n == 0`.\"] # [doc = \"\"] # [doc = \" Uses rejection sampling to avoid modulo bias (Exact, no approximation).\"] pub fn next_usize_below (& mut self , n : usize) -> usize { assert ! (n > 0 , \"n must be positive\") ; let n = n as u64 ; let threshold = u64 :: MAX - (u64 :: MAX % n) ; loop { let v = self . next_u64 () ; if v < threshold { return (v % n) as usize ; } } } }",
+      "reason": "dropped non-doc attribute(s) on method `new`: # [must_use]",
+      "item_name": "impl Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 110,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "impl Rng { # [doc = \" Construct a generator from a fixed seed (RT3: no undeclared entropy).\"] # [doc = \"\"] # [doc = \" A seed of `0` is promoted to a non-zero default to avoid a degenerate Xorshift state.\"] # [must_use] pub fn new (seed : u64) -> Self { let state = if seed == 0 { 0xDEAD_BEEF_CAFE_1337 } else { seed } ; Self { state } } # [doc = \" Advance the state and return the next `u64` (Xorshift64).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" Deterministic; same state always yields same output (C4 / RT3).\"] pub fn next_u64 (& mut self) -> u64 { let mut x = self . state ; x ^= x << 13 ; x ^= x >> 7 ; x ^= x << 17 ; self . state = x ; x } # [doc = \" Advance and return a `u32`.\"] pub fn next_u32 (& mut self) -> u32 { (self . next_u64 () >> 32) as u32 } # [doc = \" Advance and return a value in `[0, n)`. Panics if `n == 0`.\"] # [doc = \"\"] # [doc = \" Uses rejection sampling to avoid modulo bias (Exact, no approximation).\"] pub fn next_usize_below (& mut self , n : usize) -> usize { assert ! (n > 0 , \"n must be positive\") ; let n = n as u64 ; let threshold = u64 :: MAX - (u64 :: MAX % n) ; loop { let v = self . next_u64 () ; if v < threshold { return (v % n) as usize ; } } } }",
+      "reason": "impl method `next_u64` body: mutating method body statement is neither a `let`, a supported `self.<field>`/`*<param>` re-assignment, nor (in tail position) the method's own return value — value-threading deliberately refuses any shape outside a flat re-assignment sequence rather than risk an unsound rebind (DN-125 §6.1, never-silent G2/VR-5)",
+      "item_name": "impl Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 110,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "impl Rng { # [doc = \" Construct a generator from a fixed seed (RT3: no undeclared entropy).\"] # [doc = \"\"] # [doc = \" A seed of `0` is promoted to a non-zero default to avoid a degenerate Xorshift state.\"] # [must_use] pub fn new (seed : u64) -> Self { let state = if seed == 0 { 0xDEAD_BEEF_CAFE_1337 } else { seed } ; Self { state } } # [doc = \" Advance the state and return the next `u64` (Xorshift64).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" Deterministic; same state always yields same output (C4 / RT3).\"] pub fn next_u64 (& mut self) -> u64 { let mut x = self . state ; x ^= x << 13 ; x ^= x >> 7 ; x ^= x << 17 ; self . state = x ; x } # [doc = \" Advance and return a `u32`.\"] pub fn next_u32 (& mut self) -> u32 { (self . next_u64 () >> 32) as u32 } # [doc = \" Advance and return a value in `[0, n)`. Panics if `n == 0`.\"] # [doc = \"\"] # [doc = \" Uses rejection sampling to avoid modulo bias (Exact, no approximation).\"] pub fn next_usize_below (& mut self , n : usize) -> usize { assert ! (n > 0 , \"n must be positive\") ; let n = n as u64 ; let threshold = u64 :: MAX - (u64 :: MAX % n) ; loop { let v = self . next_u64 () ; if v < threshold { return (v % n) as usize ; } } } }",
+      "reason": "impl method `next_u32` body: cast `(self . next_u64 () >> 32) as u32` — operand type unknown: `as` fidelity requires a known operand type, but the operand is not a bare in-scope identifier (or a `(..)`/`&..` wrapper around one) whose type this transpiler can resolve without guessing (no general expression-typing pass; VR-5)",
+      "item_name": "impl Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 110,
+      "col": 1,
+      "category": "MultiStmtBody",
+      "rust_construct": "MultiStmtBody",
+      "snippet": "impl Rng { # [doc = \" Construct a generator from a fixed seed (RT3: no undeclared entropy).\"] # [doc = \"\"] # [doc = \" A seed of `0` is promoted to a non-zero default to avoid a degenerate Xorshift state.\"] # [must_use] pub fn new (seed : u64) -> Self { let state = if seed == 0 { 0xDEAD_BEEF_CAFE_1337 } else { seed } ; Self { state } } # [doc = \" Advance the state and return the next `u64` (Xorshift64).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" Deterministic; same state always yields same output (C4 / RT3).\"] pub fn next_u64 (& mut self) -> u64 { let mut x = self . state ; x ^= x << 13 ; x ^= x >> 7 ; x ^= x << 17 ; self . state = x ; x } # [doc = \" Advance and return a `u32`.\"] pub fn next_u32 (& mut self) -> u32 { (self . next_u64 () >> 32) as u32 } # [doc = \" Advance and return a value in `[0, n)`. Panics if `n == 0`.\"] # [doc = \"\"] # [doc = \" Uses rejection sampling to avoid modulo bias (Exact, no approximation).\"] pub fn next_usize_below (& mut self , n : usize) -> usize { assert ! (n > 0 , \"n must be positive\") ; let n = n as u64 ; let threshold = u64 :: MAX - (u64 :: MAX % n) ; loop { let v = self . next_u64 () ; if v < threshold { return (v % n) as usize ; } } } }",
+      "reason": "impl method `next_usize_below` body: function body contains a macro-invocation statement — unsupported in a value-threaded mutating body exactly as in the ordinary body form",
+      "item_name": "impl Rng"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 164,
+      "col": 1,
+      "category": "Trait",
+      "rust_construct": "Trait",
+      "snippet": "# [doc = \" A type that can produce values of type `T` given an `Rng`.\"] # [doc = \"\"] # [doc = \" The seed + generator sequence is fully deterministic (C4/RT3). A `Gen<T>` that cannot\"] # [doc = \" produce any value MUST return an empty list from [`Gen::shrink`] so the harness can\"] # [doc = \" report [`Verdict::Skipped`] rather than looping indefinitely.\"] pub trait Gen < T > { # [doc = \" Try to produce a value; `None` if the generator is exhausted or cannot produce.\"] fn generate (& mut self , rng : & mut Rng) -> Option < T > ; # [doc = \" Produce shrink candidates from a failing value (smaller/simpler values that might still\"] # [doc = \" reproduce the failure). Default: no shrinking (empty list).\"] fn shrink (& self , _value : & T) -> Vec < T > { vec ! [] } }",
+      "reason": "trait `Gen` method `generate` signature has no confirmed mapping (a trait-body `Self`/`self` has no concrete referent in this grammar; `self` parameter with no enclosing impl/trait context)",
+      "item_name": "Gen"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 182,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" A declared, bounded trial budget for a property run (C6 — effects are bounded).\"] # [doc = \"\"] # [doc = \" A property cannot run with an unbounded budget; the `Budget` enforces a finite trial count.\"] # [doc = \" The minimum is 1; creating a `Budget(0)` is refused (C1 — never silent).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , PartialOrd , Ord)] pub struct Budget (u32) ;",
+      "reason": "struct `Budget` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 182,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" A declared, bounded trial budget for a property run (C6 — effects are bounded).\"] # [doc = \"\"] # [doc = \" A property cannot run with an unbounded budget; the `Budget` enforces a finite trial count.\"] # [doc = \" The minimum is 1; creating a `Budget(0)` is refused (C1 — never silent).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , PartialOrd , Ord)] pub struct Budget (u32) ;",
+      "reason": "struct `Budget` derive(Copy) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 182,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "# [doc = \" A declared, bounded trial budget for a property run (C6 — effects are bounded).\"] # [doc = \"\"] # [doc = \" A property cannot run with an unbounded budget; the `Budget` enforces a finite trial count.\"] # [doc = \" The minimum is 1; creating a `Budget(0)` is refused (C1 — never silent).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , PartialOrd , Ord)] pub struct Budget (u32) ;",
+      "reason": "struct `Budget` derive(...) names Eq, Ord not in the DN-128 standard-derive set this leaf builds (Debug/Default/Clone/Copy/PartialEq/PartialOrd/Hash all recognized; bare Eq/Ord are deliberately NOT recognized — see emit/derives/mod.rs::TABLE's doc for why) — dropped, no confirmed Mycelium surface",
+      "item_name": "Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 189,
+      "col": 1,
+      "category": "AssocConst",
+      "rust_construct": "AssocConst",
+      "snippet": "impl Budget { # [doc = \" The default budget when no specific value is required (100 trials).\"] pub const DEFAULT : Budget = Budget (100) ; # [doc = \" The minimum budget (1 trial).\"] pub const MIN : Budget = Budget (1) ; # [doc = \" Create a budget from a trial count. Returns `None` if `trials == 0` (C1 — never-silent).\"] # [must_use] pub fn new (trials : u32) -> Option < Self > { if trials == 0 { None } else { Some (Budget (trials)) } } # [doc = \" The number of trials this budget permits.\"] # [must_use] pub fn trials (self) -> u32 { self . 0 } }",
+      "reason": "impl associated const `DEFAULT`",
+      "item_name": "impl Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 189,
+      "col": 1,
+      "category": "AssocConst",
+      "rust_construct": "AssocConst",
+      "snippet": "impl Budget { # [doc = \" The default budget when no specific value is required (100 trials).\"] pub const DEFAULT : Budget = Budget (100) ; # [doc = \" The minimum budget (1 trial).\"] pub const MIN : Budget = Budget (1) ; # [doc = \" Create a budget from a trial count. Returns `None` if `trials == 0` (C1 — never-silent).\"] # [must_use] pub fn new (trials : u32) -> Option < Self > { if trials == 0 { None } else { Some (Budget (trials)) } } # [doc = \" The number of trials this budget permits.\"] # [must_use] pub fn trials (self) -> u32 { self . 0 } }",
+      "reason": "impl associated const `MIN`",
+      "item_name": "impl Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 189,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "impl Budget { # [doc = \" The default budget when no specific value is required (100 trials).\"] pub const DEFAULT : Budget = Budget (100) ; # [doc = \" The minimum budget (1 trial).\"] pub const MIN : Budget = Budget (1) ; # [doc = \" Create a budget from a trial count. Returns `None` if `trials == 0` (C1 — never-silent).\"] # [must_use] pub fn new (trials : u32) -> Option < Self > { if trials == 0 { None } else { Some (Budget (trials)) } } # [doc = \" The number of trials this budget permits.\"] # [must_use] pub fn trials (self) -> u32 { self . 0 } }",
+      "reason": "dropped non-doc attribute(s) on method `new`: # [must_use]",
+      "item_name": "impl Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 189,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "impl Budget { # [doc = \" The default budget when no specific value is required (100 trials).\"] pub const DEFAULT : Budget = Budget (100) ; # [doc = \" The minimum budget (1 trial).\"] pub const MIN : Budget = Budget (1) ; # [doc = \" Create a budget from a trial count. Returns `None` if `trials == 0` (C1 — never-silent).\"] # [must_use] pub fn new (trials : u32) -> Option < Self > { if trials == 0 { None } else { Some (Budget (trials)) } } # [doc = \" The number of trials this budget permits.\"] # [must_use] pub fn trials (self) -> u32 { self . 0 } }",
+      "reason": "dropped non-doc attribute(s) on method `trials`: # [must_use]",
+      "item_name": "impl Budget"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 215,
+      "col": 1,
+      "category": "WhereClause",
+      "rust_construct": "WhereClause",
+      "snippet": "# [doc = \" Run a property test: generate `budget` inputs from `gen` and check `prop` for each.\"] # [doc = \"\"] # [doc = \" Returns the first failure (shrunk to a minimal counterexample), `Skipped` if the generator\"] # [doc = \" cannot produce any input, or `Pass` if all trials succeed.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (the verdict is an exact function of the run)\"] # [doc = \" A passing `for_all` **backs an `Empirical` claim** about the property — not `Proven`. The\"] # [doc = \" harness has no operation that turns \\\"passed N trials\\\" into `Proven`; that would be the\"] # [doc = \" exact VR-5 violation the module exists to prevent (spec §4 / §4.1 C2).\"] # [doc = \"\"] # [doc = \" # Fallibility\"] # [doc = \" - `Verdict::Fail{..}` — property violated; carries shrunk counterexample + seed.\"] # [doc = \" - `Verdict::Skipped{SkipReason::NeedsRecord}` — generator produced no inputs.\"] # [doc = \"\"] # [doc = \" # Effects: none (pure; seeded — C6)\"] # [doc = \" The `seed` parameter makes the run reproducible (RT3). No undeclared entropy is drawn.\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" A `Fail` verdict carries the shrunk counterexample description + the reproducing seed so\"] # [doc = \" the failure can be reproduced and explained (C3/G11/SC-3).\"] pub fn for_all < T , G > (gen : & mut G , seed : u64 , budget : Budget , prop : impl Fn (& T) -> bool) -> Verdict where G : Gen < T > , T : core :: fmt :: Debug , { let mut rng = Rng :: new (seed) ; let mut generated_any = false ; for trial in 0 .. budget . trials () { let Some (input) = gen . generate (& mut rng) else { if ! generated_any { return Verdict :: Skipped { reason : SkipReason :: NeedsRecord , } ; } break ; } ; generated_any = true ; if ! prop (& input) { let shrunk_desc = shrink_to_minimal (& input , & mut | v | ! prop (v) , gen , trial) ; return Verdict :: Fail { record : FailRecord { description : shrunk_desc , seed , trial , context : \"for_all property violated\" . to_owned () , } , } ; } } if ! generated_any { return Verdict :: Skipped { reason : SkipReason :: NeedsRecord , } ; } Verdict :: Pass }",
+      "reason": "a `where` clause has no Mycelium equivalent",
+      "item_name": "for_all"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 280,
+      "col": 1,
+      "category": "WhereClause",
+      "rust_construct": "WhereClause",
+      "snippet": "# [doc = \" Shrink a failing value to a minimal counterexample.\"] # [doc = \"\"] # [doc = \" Tries shrink candidates from the generator; returns a `Debug` string of the minimal\"] # [doc = \" reproducing input. The number of shrink steps is bounded (at most 1000) to keep the\"] # [doc = \" shrinking itself bounded (C6).\"] fn shrink_to_minimal < T , G > (initial : & T , still_fails : & mut impl FnMut (& T) -> bool , gen : & mut G , trial : u32 ,) -> String where G : Gen < T > , T : core :: fmt :: Debug , { let mut best = format ! (\"{initial:?}\") ; let mut candidates = gen . shrink (initial) ; let mut steps = 0usize ; while ! candidates . is_empty () && steps < 1000 { let mut next_candidates = vec ! [] ; for c in & candidates { if still_fails (c) { best = format ! (\"{c:?}\") ; next_candidates = gen . shrink (c) ; break ; } } candidates = next_candidates ; steps += 1 ; } format ! (\"trial={trial} value={best}\") }",
+      "reason": "a `where` clause has no Mycelium equivalent",
+      "item_name": "shrink_to_minimal"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 317,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" A golden baseline: an identifier (the \\\"name\\\") and its expected serialized form.\"] # [doc = \"\"] # [doc = \" Golden baselines are **content-addressed** by the combination of `name` + `expected` text\"] # [doc = \" (C4/ADR-003). The `name` is a human-readable label; the `expected` is the stored snapshot.\"] # [doc = \"\"] # [doc = \" **FLAG-IO:** In a full implementation, golden baselines would be persisted to the filesystem\"] # [doc = \" and the IO effect declared on the op. Here, baselines are supplied at call time (no filesystem\"] # [doc = \" dep in this Ring-2 library), matching the spec's \\\"test library, not the runner\\\" boundary.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct GoldenBaseline { # [doc = \" The identifier for this golden test.\"] pub name : String , # [doc = \" The expected snapshot content.\"] pub expected : String , }",
+      "reason": "struct `GoldenBaseline` named field(s) `name, expected` emitted positionally as `GoldenBaseline(Bytes, Bytes)` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped (matches `lib/std/*.myc` hand-ports)",
+      "item_name": "GoldenBaseline"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 317,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" A golden baseline: an identifier (the \\\"name\\\") and its expected serialized form.\"] # [doc = \"\"] # [doc = \" Golden baselines are **content-addressed** by the combination of `name` + `expected` text\"] # [doc = \" (C4/ADR-003). The `name` is a human-readable label; the `expected` is the stored snapshot.\"] # [doc = \"\"] # [doc = \" **FLAG-IO:** In a full implementation, golden baselines would be persisted to the filesystem\"] # [doc = \" and the IO effect declared on the op. Here, baselines are supplied at call time (no filesystem\"] # [doc = \" dep in this Ring-2 library), matching the spec's \\\"test library, not the runner\\\" boundary.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct GoldenBaseline { # [doc = \" The identifier for this golden test.\"] pub name : String , # [doc = \" The expected snapshot content.\"] pub expected : String , }",
+      "reason": "struct `GoldenBaseline` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "GoldenBaseline"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 317,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "# [doc = \" A golden baseline: an identifier (the \\\"name\\\") and its expected serialized form.\"] # [doc = \"\"] # [doc = \" Golden baselines are **content-addressed** by the combination of `name` + `expected` text\"] # [doc = \" (C4/ADR-003). The `name` is a human-readable label; the `expected` is the stored snapshot.\"] # [doc = \"\"] # [doc = \" **FLAG-IO:** In a full implementation, golden baselines would be persisted to the filesystem\"] # [doc = \" and the IO effect declared on the op. Here, baselines are supplied at call time (no filesystem\"] # [doc = \" dep in this Ring-2 library), matching the spec's \\\"test library, not the runner\\\" boundary.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct GoldenBaseline { # [doc = \" The identifier for this golden test.\"] pub name : String , # [doc = \" The expected snapshot content.\"] pub expected : String , }",
+      "reason": "struct `GoldenBaseline` derive(...) names Eq not in the DN-128 standard-derive set this leaf builds (Debug/Default/Clone/Copy/PartialEq/PartialOrd/Hash all recognized; bare Eq/Ord are deliberately NOT recognized — see emit/derives/mod.rs::TABLE's doc for why) — dropped, no confirmed Mycelium surface",
+      "item_name": "GoldenBaseline"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 333,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl GoldenBaseline { # [doc = \" Construct a baseline from a name and expected string.\"] # [must_use] pub fn new (name : impl Into < String > , expected : impl Into < String >) -> Self { Self { name : name . into () , expected : expected . into () , } } }",
+      "reason": "no member of this impl block could be transpiled (1 sub-issue(s)): impl method `new` signature: unsupported Rust type form `impl Into < String >`",
+      "item_name": "GoldenBaseline"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 344,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" Run a golden / snapshot test: compare `produced` against the stored baseline.\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (the verdict is an exact function of produced vs baseline)\"] # [doc = \"\"] # [doc = \" # Fallibility\"] # [doc = \" - `Verdict::Fail{..}` — mismatch; carries a diff (C3 EXPLAIN: the diff + context).\"] # [doc = \" - `Verdict::Skipped{SkipReason::NeedsRecord}` — baseline is `None` (missing).\"] # [doc = \"   A missing baseline is **never** auto-accepted (C1/G2 — the honesty crux for golden tests).\"] # [doc = \"\"] # [doc = \" # Effects\"] # [doc = \" Declared: none at this layer (the baseline is passed in, not read from disk). The runner/CI\"] # [doc = \" wiring that supplies the baseline owns any filesystem IO — this library owns only the\"] # [doc = \" comparison and verdict.\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" A mismatch carries both the expected and produced values so the failure is inspectable (C3).\"] pub fn golden (baseline : Option < & GoldenBaseline > , name : & str , produced : & str) -> Verdict { match baseline { None => { Verdict :: Skipped { reason : SkipReason :: NeedsRecord , } } Some (b) if b . name != name => { Verdict :: Skipped { reason : SkipReason :: NeedsRecord , } } Some (b) => { if b . expected == produced { Verdict :: Pass } else { let diff = make_diff (& b . expected , produced) ; Verdict :: Fail { record : FailRecord { description : format ! (\"golden mismatch for '{}': expected {:?}, got {:?}; diff: {}\" , name , b . expected , produced , diff) , seed : 0 , trial : 0 , context : format ! (\"golden({})\" , name) , } , } } } } }",
+      "reason": "struct literal `Skipped { .. }` — not an in-file single-ctor struct or enum struct-variant that emits (no constructor to build; a cross-nodule variant is an honest DN-113/DN-134-OQ-2 resolvability gap, never a fabricated out-of-file reference — VR-5/G2)",
+      "item_name": "golden"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 396,
+      "col": 1,
+      "category": "MultiStmtBody",
+      "rust_construct": "MultiStmtBody",
+      "snippet": "# [doc = \" Produce a human-readable diff description between `expected` and `actual` (C3/G11).\"] # [doc = \"\"] # [doc = \" This is a minimal line-level diff sufficient for the EXPLAIN artifact; a full diff tool\"] # [doc = \" lives in the runner, not this library.\"] fn make_diff (expected : & str , actual : & str) -> String { let exp_lines : Vec < & str > = expected . lines () . collect () ; let act_lines : Vec < & str > = actual . lines () . collect () ; let mut result = String :: new () ; let max = exp_lines . len () . max (act_lines . len ()) ; for i in 0 .. max { match (exp_lines . get (i) , act_lines . get (i)) { (Some (e) , Some (a)) if e == a => { result . push_str (& format ! (\"  {e}\\n\")) ; } (Some (e) , Some (a)) => { result . push_str (& format ! (\"- {e}\\n+ {a}\\n\")) ; } (Some (e) , None) => { result . push_str (& format ! (\"- {e}\\n\")) ; } (None , Some (a)) => { result . push_str (& format ! (\"+ {a}\\n\")) ; } (None , None) => { } } } result }",
+      "reason": "`let` binding uses an unsupported pattern (only simple `let x = e;` is supported)",
+      "item_name": "make_diff"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 428,
+      "col": 1,
+      "category": "WhereClause",
+      "rust_construct": "WhereClause",
+      "snippet": "# [doc = \" Run a differential (oracle) test: require `lhs(input) == rhs(input)`.\"] # [doc = \"\"] # [doc = \" This implements the M-151/M-210 interp↔AOT/native oracle pattern (NFR-7). The two-level\"] # [doc = \" agreement bar (§8-Q5 RESOLVED): observable-result equivalence is the floor enforced here;\"] # [doc = \" the tag/EXPLAIN equivalence level requires deeper `std.diag` call-site integration (FLAG-Q5).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (the verdict is an exact function of both outputs)\"] # [doc = \"\"] # [doc = \" # Fallibility\"] # [doc = \" - `Verdict::Fail{..}` — disagreement; carries both outputs for inspection (C3/EXPLAIN).\"] # [doc = \" - `Verdict::Skipped{SkipReason::BackendUnavailable}` — `lhs` or `rhs` is unavailable.\"] # [doc = \"   An unavailable backend is **never** a silent pass (C1/G2).\"] # [doc = \"\"] # [doc = \" # Effects: none (pure, given available backends — C6)\"] # [doc = \" Per-backend IO declared by the `available` flags.\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" A `Fail` carries both outputs and the input description so the disagreement is inspectable\"] # [doc = \" (C3/G11/SC-3). **FLAG-Q5:** the tag/EXPLAIN level of the §8-Q5 two-level bar awaits\"] # [doc = \" `std.diag` (FLAG-DIAG).\"] pub fn differential < O > (input_desc : & str , lhs_available : bool , lhs : impl FnOnce () -> O , rhs_available : bool , rhs : impl FnOnce () -> O ,) -> Verdict where O : PartialEq + core :: fmt :: Debug , { if ! lhs_available || ! rhs_available { return Verdict :: Skipped { reason : SkipReason :: BackendUnavailable , } ; } let lhs_out = lhs () ; let rhs_out = rhs () ; if lhs_out == rhs_out { Verdict :: Pass } else { Verdict :: Fail { record : FailRecord { description : format ! (\"differential disagreement for input '{input_desc}': lhs={lhs_out:?} rhs={rhs_out:?}\") , seed : 0 , trial : 0 , context : format ! (\"differential({})\" , input_desc) , } , } } }",
+      "reason": "a `where` clause has no Mycelium equivalent",
+      "item_name": "differential"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 486,
+      "col": 1,
+      "category": "MultiStmtBody",
+      "rust_construct": "MultiStmtBody",
+      "snippet": "# [doc = \" Aggregate a slice of verdicts into a [`Summary`].\"] # [doc = \"\"] # [doc = \" `Skipped` and `Undetermined` counts are **kept distinct** from `Pass` (the crux: \\\"green\\\"\"] # [doc = \" cannot silently include \\\"did not check\\\" — C1/G2).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (a total function over verdicts — no approximation)\"] # [doc = \" # Fallibility: total\"] # [doc = \" # Effects: none\"] # [doc = \" # EXPLAIN: yes — the per-class counts are the inspection artifact (spec §4)\"] pub fn summarize (vs : & [Verdict]) -> Summary { let mut passed = 0u32 ; let mut failed = 0u32 ; let mut skipped = 0u32 ; let mut undetermined = 0u32 ; for v in vs { match v { Verdict :: Pass => passed += 1 , Verdict :: Fail { .. } => failed += 1 , Verdict :: Skipped { .. } => skipped += 1 , Verdict :: Undetermined { .. } => undetermined += 1 , } } Summary { passed , failed , skipped , undetermined , } }",
+      "reason": "function body has a semicolon-terminated (value-discarding) statement expression before the tail — a `let`-chain body maps only simple `let x = e;` bindings plus a single trailing expression",
+      "item_name": "summarize"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/lib.rs",
+      "line": 518,
+      "col": 1,
+      "category": "Other",
+      "rust_construct": "Other",
+      "snippet": "# [doc = \" True only if there are no failures **and** skipped/undetermined counts are surfaced (i.e.,\"] # [doc = \" the caller can see them — this function does NOT hide them).\"] # [doc = \"\"] # [doc = \" \\\"Green\\\" means *checked and passed*, never *did not check* (C1/G2 — the honesty crux).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact`\"] # [doc = \" # Fallibility: total\"] # [doc = \" # EXPLAIN: yes — the caller can inspect `Summary` to see the skip/undetermined counts\"] # [doc = \"\"] # [doc = \" **Note:** `is_green` returns `true` when `failed == 0`, regardless of skipped/undetermined\"] # [doc = \" count. The skipped/undetermined are *surfaced* in the `Summary` — `is_green` does not hide\"] # [doc = \" them, but it does not force them to block a pass. This matches the spec's \\\"skips are surfaced,\"] # [doc = \" not silently absent\\\" intent: a skip is visible in the Summary and must be explained; whether\"] # [doc = \" it blocks the CI run is the runner's decision, not the harness's. An `is_green` that returned\"] # [doc = \" `false` for any non-zero skip would violate C1 by treating \\\"could not run\\\" as \\\"failed\\\".\"] pub fn is_green (s : & Summary) -> bool { s . failed == 0 }",
+      "reason": "field access on a non-`self` base — the transpiler tracks no local types, so the projection cannot be resolved to a constructor position (only `self.<field>` desugars to a `match`)",
+      "item_name": "is_green"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 9,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" A structured failure record carried by [`Verdict::Fail`].\"] # [doc = \"\"] # [doc = \" This is the `std.testing` representation of a diagnostic record (spec §3:\"] # [doc = \" `Fail { diagnostic: Diag }`).\"] # [doc = \"\"] # [doc = \" # FLAG-DIAG (RESOLVED, testing↔diag seam — spec §7-Q2)\"] # [doc = \" `std.diag` (M-510) has landed, so `FailRecord` now **delegates** to its canonical record:\"] # [doc = \" [`FailRecord::to_diag`] projects to a [`mycelium_diag::Diag`] — the structured diagnostic the\"] # [doc = \" rest of the failure-legibility substrate speaks (README §5). `FailRecord` keeps the\"] # [doc = \" **testing-specific reproduction metadata** (the seed + trial index) that a generic `Diag` does\"] # [doc = \" not model, and folds them — with the description and op context — into the `Diag`'s message and\"] # [doc = \" notes. The `Diag` is the legibility artifact; this record is its seed-reproducible test wrapper.\"] # [doc = \"\"] # [doc = \" # C1 — never-silent\"] # [doc = \" Every failure is a structured record with a description + reproducing seed — never an opaque\"] # [doc = \" red/green bit (RFC-0013 via spec §4.1 C3).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" The `description` carries the shrunk counterexample or diff; the `seed` makes the failure\"] # [doc = \" reproducible; the `context` names the op that failed. This is the EXPLAIN artifact.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct FailRecord { # [doc = \" Human-readable description of the failure (shrunk counterexample, diff, etc.).\"] # [doc = \" **EXPLAIN artifact** (C3/G11/SC-3).\"] pub description : String , # [doc = \" The seed that reproduces this failure (RT3 / spec §3 — \\\"reproducible by seed\\\").\"] pub seed : u64 , # [doc = \" The trial index at which the failure occurred.\"] pub trial : u32 , # [doc = \" The op context that produced this failure (e.g. `\\\"for_all\\\"`, `\\\"golden(name)\\\"`).\"] pub context : String , }",
+      "reason": "struct `FailRecord` named field(s) `description, seed, trial, context` emitted positionally as `FailRecord(Bytes, Binary{64}, Binary{32}, Bytes)` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped (matches `lib/std/*.myc` hand-ports)",
+      "item_name": "FailRecord"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 9,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" A structured failure record carried by [`Verdict::Fail`].\"] # [doc = \"\"] # [doc = \" This is the `std.testing` representation of a diagnostic record (spec §3:\"] # [doc = \" `Fail { diagnostic: Diag }`).\"] # [doc = \"\"] # [doc = \" # FLAG-DIAG (RESOLVED, testing↔diag seam — spec §7-Q2)\"] # [doc = \" `std.diag` (M-510) has landed, so `FailRecord` now **delegates** to its canonical record:\"] # [doc = \" [`FailRecord::to_diag`] projects to a [`mycelium_diag::Diag`] — the structured diagnostic the\"] # [doc = \" rest of the failure-legibility substrate speaks (README §5). `FailRecord` keeps the\"] # [doc = \" **testing-specific reproduction metadata** (the seed + trial index) that a generic `Diag` does\"] # [doc = \" not model, and folds them — with the description and op context — into the `Diag`'s message and\"] # [doc = \" notes. The `Diag` is the legibility artifact; this record is its seed-reproducible test wrapper.\"] # [doc = \"\"] # [doc = \" # C1 — never-silent\"] # [doc = \" Every failure is a structured record with a description + reproducing seed — never an opaque\"] # [doc = \" red/green bit (RFC-0013 via spec §4.1 C3).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" The `description` carries the shrunk counterexample or diff; the `seed` makes the failure\"] # [doc = \" reproducible; the `context` names the op that failed. This is the EXPLAIN artifact.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct FailRecord { # [doc = \" Human-readable description of the failure (shrunk counterexample, diff, etc.).\"] # [doc = \" **EXPLAIN artifact** (C3/G11/SC-3).\"] pub description : String , # [doc = \" The seed that reproduces this failure (RT3 / spec §3 — \\\"reproducible by seed\\\").\"] pub seed : u64 , # [doc = \" The trial index at which the failure occurred.\"] pub trial : u32 , # [doc = \" The op context that produced this failure (e.g. `\\\"for_all\\\"`, `\\\"golden(name)\\\"`).\"] pub context : String , }",
+      "reason": "struct `FailRecord` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "FailRecord"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 9,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "# [doc = \" A structured failure record carried by [`Verdict::Fail`].\"] # [doc = \"\"] # [doc = \" This is the `std.testing` representation of a diagnostic record (spec §3:\"] # [doc = \" `Fail { diagnostic: Diag }`).\"] # [doc = \"\"] # [doc = \" # FLAG-DIAG (RESOLVED, testing↔diag seam — spec §7-Q2)\"] # [doc = \" `std.diag` (M-510) has landed, so `FailRecord` now **delegates** to its canonical record:\"] # [doc = \" [`FailRecord::to_diag`] projects to a [`mycelium_diag::Diag`] — the structured diagnostic the\"] # [doc = \" rest of the failure-legibility substrate speaks (README §5). `FailRecord` keeps the\"] # [doc = \" **testing-specific reproduction metadata** (the seed + trial index) that a generic `Diag` does\"] # [doc = \" not model, and folds them — with the description and op context — into the `Diag`'s message and\"] # [doc = \" notes. The `Diag` is the legibility artifact; this record is its seed-reproducible test wrapper.\"] # [doc = \"\"] # [doc = \" # C1 — never-silent\"] # [doc = \" Every failure is a structured record with a description + reproducing seed — never an opaque\"] # [doc = \" red/green bit (RFC-0013 via spec §4.1 C3).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" The `description` carries the shrunk counterexample or diff; the `seed` makes the failure\"] # [doc = \" reproducible; the `context` names the op that failed. This is the EXPLAIN artifact.\"] # [derive (Debug , Clone , PartialEq , Eq)] pub struct FailRecord { # [doc = \" Human-readable description of the failure (shrunk counterexample, diff, etc.).\"] # [doc = \" **EXPLAIN artifact** (C3/G11/SC-3).\"] pub description : String , # [doc = \" The seed that reproduces this failure (RT3 / spec §3 — \\\"reproducible by seed\\\").\"] pub seed : u64 , # [doc = \" The trial index at which the failure occurred.\"] pub trial : u32 , # [doc = \" The op context that produced this failure (e.g. `\\\"for_all\\\"`, `\\\"golden(name)\\\"`).\"] pub context : String , }",
+      "reason": "struct `FailRecord` derive(...) names Eq not in the DN-128 standard-derive set this leaf builds (Debug/Default/Clone/Copy/PartialEq/PartialOrd/Hash all recognized; bare Eq/Ord are deliberately NOT recognized — see emit/derives/mod.rs::TABLE's doc for why) — dropped, no confirmed Mycelium surface",
+      "item_name": "FailRecord"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 42,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl FailRecord { # [doc = \" Project this failure to the canonical [`mycelium_diag::Diag`] record (the testing↔diag\"] # [doc = \" seam — spec §7-Q2). The `description` becomes the diagnostic message; the op `context`, the\"] # [doc = \" reproducing `seed`, and the `trial` index ride along as EXPLAIN notes (G11). Severity is\"] # [doc = \" `Error` and the code is the test-failure class — never an opaque red/green bit (C1/C3).\"] # [doc = \"\"] # [doc = \" # Guarantee tag: `Exact` (a pure, total projection)\"] # [must_use] pub fn to_diag (& self) -> mycelium_diag :: Diag { mycelium_diag :: Diag :: error (mycelium_diag :: Code :: Other (\"test.fail\" . to_owned ())) . message (self . description . clone ()) . note (format ! (\"context={}\" , self . context)) . note (format ! (\"seed={}\" , self . seed)) . note (format ! (\"trial={}\" , self . trial)) } }",
+      "reason": "no member of this impl block could be transpiled (1 sub-issue(s)): impl method `to_diag` signature: qualified type path `mycelium_diag :: Diag` — collapsing to its last segment would risk colliding with an unrelated same-named local type (e.g. `std::cmp::Ordering` vs a local `Ordering`); left an explicit gap rather than guessed (VR-5)",
+      "item_name": "FailRecord"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 61,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test was skipped (spec §3).\"] # [doc = \"\"] # [doc = \" A `Skipped` verdict always carries a reason — **never** an absent or unnamed skip (C1/G2).\"] # [doc = \" The reason is part of the EXPLAIN artifact; a skip without a reason would be a black box\"] # [doc = \" (C3).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum SkipReason { # [doc = \" The test is explicitly marked as ignored (e.g. `#[ignore]` equivalent).\"] Ignored , # [doc = \" A precondition for this test was not met (e.g. a required feature is absent).\"] UnmetPrecondition , # [doc = \" The golden baseline does not exist and must be recorded before the test can run.\"] # [doc = \" **A missing baseline is `NeedsRecord`, never a silent auto-accept (C1/G2 — the golden\"] # [doc = \" test honesty crux).**\"] NeedsRecord , # [doc = \" A required backend for a differential test is not available in this environment.\"] # [doc = \" **An unavailable backend is `BackendUnavailable`, never a silent pass (C1/G2 — the\"] # [doc = \" differential test honesty crux).**\"] BackendUnavailable , # [doc = \" A tool required to run this test is missing from the environment.\"] ToolMissing , }",
+      "reason": "enum `SkipReason` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "SkipReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 61,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test was skipped (spec §3).\"] # [doc = \"\"] # [doc = \" A `Skipped` verdict always carries a reason — **never** an absent or unnamed skip (C1/G2).\"] # [doc = \" The reason is part of the EXPLAIN artifact; a skip without a reason would be a black box\"] # [doc = \" (C3).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum SkipReason { # [doc = \" The test is explicitly marked as ignored (e.g. `#[ignore]` equivalent).\"] Ignored , # [doc = \" A precondition for this test was not met (e.g. a required feature is absent).\"] UnmetPrecondition , # [doc = \" The golden baseline does not exist and must be recorded before the test can run.\"] # [doc = \" **A missing baseline is `NeedsRecord`, never a silent auto-accept (C1/G2 — the golden\"] # [doc = \" test honesty crux).**\"] NeedsRecord , # [doc = \" A required backend for a differential test is not available in this environment.\"] # [doc = \" **An unavailable backend is `BackendUnavailable`, never a silent pass (C1/G2 — the\"] # [doc = \" differential test honesty crux).**\"] BackendUnavailable , # [doc = \" A tool required to run this test is missing from the environment.\"] ToolMissing , }",
+      "reason": "enum `SkipReason` derive(Copy) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "SkipReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 61,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test was skipped (spec §3).\"] # [doc = \"\"] # [doc = \" A `Skipped` verdict always carries a reason — **never** an absent or unnamed skip (C1/G2).\"] # [doc = \" The reason is part of the EXPLAIN artifact; a skip without a reason would be a black box\"] # [doc = \" (C3).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum SkipReason { # [doc = \" The test is explicitly marked as ignored (e.g. `#[ignore]` equivalent).\"] Ignored , # [doc = \" A precondition for this test was not met (e.g. a required feature is absent).\"] UnmetPrecondition , # [doc = \" The golden baseline does not exist and must be recorded before the test can run.\"] # [doc = \" **A missing baseline is `NeedsRecord`, never a silent auto-accept (C1/G2 — the golden\"] # [doc = \" test honesty crux).**\"] NeedsRecord , # [doc = \" A required backend for a differential test is not available in this environment.\"] # [doc = \" **An unavailable backend is `BackendUnavailable`, never a silent pass (C1/G2 — the\"] # [doc = \" differential test honesty crux).**\"] BackendUnavailable , # [doc = \" A tool required to run this test is missing from the environment.\"] ToolMissing , }",
+      "reason": "enum `SkipReason` derive(Eq): covered by co-occurring PartialEq → `fn eq_SkipReason` (product-row collision policy; DN-128 / ONESHOT C2) — not a second emission",
+      "item_name": "SkipReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 86,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test result is undetermined (ran but could not decide — spec §3).\"] # [doc = \"\"] # [doc = \" `Undetermined` is distinct from both `Pass` and `Skipped`:\"] # [doc = \" - `Skipped` = could not run.\"] # [doc = \" - `Undetermined` = ran but could not reach a verdict.\"] # [doc = \"\"] # [doc = \" A non-decision is **never** a `Pass` (C1/G2).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum UndetReason { # [doc = \" The oracle required for a differential check was unavailable at runtime.\"] OracleUnavailable , # [doc = \" The property budget was exhausted without finding a counterexample, but the search was\"] # [doc = \" inconclusive (e.g. the generator space was undersampled relative to the property's domain).\"] BudgetExhaustedInconclusive , # [doc = \" The input to a differential or property is non-deterministic and could not be replayed.\"] # [doc = \" **A flaky non-deterministic input is `NonDeterministicInput`, never a silent pass (RT3 /\"] # [doc = \" C6 — the seeded-generator reproducibility discipline).**\"] NonDeterministicInput , }",
+      "reason": "enum `UndetReason` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "UndetReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 86,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test result is undetermined (ran but could not decide — spec §3).\"] # [doc = \"\"] # [doc = \" `Undetermined` is distinct from both `Pass` and `Skipped`:\"] # [doc = \" - `Skipped` = could not run.\"] # [doc = \" - `Undetermined` = ran but could not reach a verdict.\"] # [doc = \"\"] # [doc = \" A non-decision is **never** a `Pass` (C1/G2).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum UndetReason { # [doc = \" The oracle required for a differential check was unavailable at runtime.\"] OracleUnavailable , # [doc = \" The property budget was exhausted without finding a counterexample, but the search was\"] # [doc = \" inconclusive (e.g. the generator space was undersampled relative to the property's domain).\"] BudgetExhaustedInconclusive , # [doc = \" The input to a differential or property is non-deterministic and could not be replayed.\"] # [doc = \" **A flaky non-deterministic input is `NonDeterministicInput`, never a silent pass (RT3 /\"] # [doc = \" C6 — the seeded-generator reproducibility discipline).**\"] NonDeterministicInput , }",
+      "reason": "enum `UndetReason` derive(Copy) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "UndetReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 86,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The reason a test result is undetermined (ran but could not decide — spec §3).\"] # [doc = \"\"] # [doc = \" `Undetermined` is distinct from both `Pass` and `Skipped`:\"] # [doc = \" - `Skipped` = could not run.\"] # [doc = \" - `Undetermined` = ran but could not reach a verdict.\"] # [doc = \"\"] # [doc = \" A non-decision is **never** a `Pass` (C1/G2).\"] # [derive (Debug , Clone , Copy , PartialEq , Eq)] pub enum UndetReason { # [doc = \" The oracle required for a differential check was unavailable at runtime.\"] OracleUnavailable , # [doc = \" The property budget was exhausted without finding a counterexample, but the search was\"] # [doc = \" inconclusive (e.g. the generator space was undersampled relative to the property's domain).\"] BudgetExhaustedInconclusive , # [doc = \" The input to a differential or property is non-deterministic and could not be replayed.\"] # [doc = \" **A flaky non-deterministic input is `NonDeterministicInput`, never a silent pass (RT3 /\"] # [doc = \" C6 — the seeded-generator reproducibility discipline).**\"] NonDeterministicInput , }",
+      "reason": "enum `UndetReason` derive(Eq): covered by co-occurring PartialEq → `fn eq_UndetReason` (product-row collision policy; DN-128 / ONESHOT C2) — not a second emission",
+      "item_name": "UndetReason"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 108,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" The outcome of a single test case (spec §3 / §4 guarantee matrix).\"] # [doc = \"\"] # [doc = \" **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours\"] # [doc = \" of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]\"] # [doc = \" surfaces them. \\\"Green\\\" therefore means *checked and passed*, never *did not check* (C1/G2).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" Every non-`Pass` variant is a reified, inspectable artifact:\"] # [doc = \" - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.\"] # [doc = \" - `Skipped` — carries a [`SkipReason`] (never a nameless skip).\"] # [doc = \" - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).\"] # [derive (Debug , Clone , PartialEq , Eq)] pub enum Verdict { # [doc = \" The check ran and all assertions passed.\"] Pass , # [doc = \" The check ran and at least one assertion failed.\"] # [doc = \"\"] # [doc = \" Carries a [`FailRecord`] with the structured diagnostic: description, reproducing seed,\"] # [doc = \" trial index, and op context. Use [`FailRecord::to_diag`] to project to the canonical\"] # [doc = \" [`mycelium_diag::Diag`] record (FLAG-DIAG RESOLVED — `std.diag` has landed, M-510).\"] Fail { # [doc = \" The structured failure record (spec §3 `Fail { diagnostic: Diag }`).\"] record : FailRecord , } , # [doc = \" The check could not run. **Reported, never silently absent (C1/G2 — the honesty crux).**\"] Skipped { # [doc = \" Why the check was skipped (never anonymous — C3/G11).\"] reason : SkipReason , } , # [doc = \" The check ran but could not reach a verdict (e.g. oracle unavailable, budget exhausted\"] # [doc = \" inconclusively). **Not a `Pass` (C1/G2).**\"] Undetermined { # [doc = \" Why the verdict could not be determined.\"] reason : UndetReason , } , }",
+      "reason": "enum `Verdict` variant `Fail` named field(s) `record` emitted positionally as `Fail(FailRecord)` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped",
+      "item_name": "Verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 108,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" The outcome of a single test case (spec §3 / §4 guarantee matrix).\"] # [doc = \"\"] # [doc = \" **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours\"] # [doc = \" of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]\"] # [doc = \" surfaces them. \\\"Green\\\" therefore means *checked and passed*, never *did not check* (C1/G2).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" Every non-`Pass` variant is a reified, inspectable artifact:\"] # [doc = \" - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.\"] # [doc = \" - `Skipped` — carries a [`SkipReason`] (never a nameless skip).\"] # [doc = \" - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).\"] # [derive (Debug , Clone , PartialEq , Eq)] pub enum Verdict { # [doc = \" The check ran and all assertions passed.\"] Pass , # [doc = \" The check ran and at least one assertion failed.\"] # [doc = \"\"] # [doc = \" Carries a [`FailRecord`] with the structured diagnostic: description, reproducing seed,\"] # [doc = \" trial index, and op context. Use [`FailRecord::to_diag`] to project to the canonical\"] # [doc = \" [`mycelium_diag::Diag`] record (FLAG-DIAG RESOLVED — `std.diag` has landed, M-510).\"] Fail { # [doc = \" The structured failure record (spec §3 `Fail { diagnostic: Diag }`).\"] record : FailRecord , } , # [doc = \" The check could not run. **Reported, never silently absent (C1/G2 — the honesty crux).**\"] Skipped { # [doc = \" Why the check was skipped (never anonymous — C3/G11).\"] reason : SkipReason , } , # [doc = \" The check ran but could not reach a verdict (e.g. oracle unavailable, budget exhausted\"] # [doc = \" inconclusively). **Not a `Pass` (C1/G2).**\"] Undetermined { # [doc = \" Why the verdict could not be determined.\"] reason : UndetReason , } , }",
+      "reason": "enum `Verdict` variant `Skipped` named field(s) `reason` emitted positionally as `Skipped(SkipReason)` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped",
+      "item_name": "Verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 108,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" The outcome of a single test case (spec §3 / §4 guarantee matrix).\"] # [doc = \"\"] # [doc = \" **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours\"] # [doc = \" of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]\"] # [doc = \" surfaces them. \\\"Green\\\" therefore means *checked and passed*, never *did not check* (C1/G2).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" Every non-`Pass` variant is a reified, inspectable artifact:\"] # [doc = \" - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.\"] # [doc = \" - `Skipped` — carries a [`SkipReason`] (never a nameless skip).\"] # [doc = \" - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).\"] # [derive (Debug , Clone , PartialEq , Eq)] pub enum Verdict { # [doc = \" The check ran and all assertions passed.\"] Pass , # [doc = \" The check ran and at least one assertion failed.\"] # [doc = \"\"] # [doc = \" Carries a [`FailRecord`] with the structured diagnostic: description, reproducing seed,\"] # [doc = \" trial index, and op context. Use [`FailRecord::to_diag`] to project to the canonical\"] # [doc = \" [`mycelium_diag::Diag`] record (FLAG-DIAG RESOLVED — `std.diag` has landed, M-510).\"] Fail { # [doc = \" The structured failure record (spec §3 `Fail { diagnostic: Diag }`).\"] record : FailRecord , } , # [doc = \" The check could not run. **Reported, never silently absent (C1/G2 — the honesty crux).**\"] Skipped { # [doc = \" Why the check was skipped (never anonymous — C3/G11).\"] reason : SkipReason , } , # [doc = \" The check ran but could not reach a verdict (e.g. oracle unavailable, budget exhausted\"] # [doc = \" inconclusively). **Not a `Pass` (C1/G2).**\"] Undetermined { # [doc = \" Why the verdict could not be determined.\"] reason : UndetReason , } , }",
+      "reason": "enum `Verdict` variant `Undetermined` named field(s) `reason` emitted positionally as `Undetermined(UndetReason)` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped",
+      "item_name": "Verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 108,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The outcome of a single test case (spec §3 / §4 guarantee matrix).\"] # [doc = \"\"] # [doc = \" **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours\"] # [doc = \" of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]\"] # [doc = \" surfaces them. \\\"Green\\\" therefore means *checked and passed*, never *did not check* (C1/G2).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" Every non-`Pass` variant is a reified, inspectable artifact:\"] # [doc = \" - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.\"] # [doc = \" - `Skipped` — carries a [`SkipReason`] (never a nameless skip).\"] # [doc = \" - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).\"] # [derive (Debug , Clone , PartialEq , Eq)] pub enum Verdict { # [doc = \" The check ran and all assertions passed.\"] Pass , # [doc = \" The check ran and at least one assertion failed.\"] # [doc = \"\"] # [doc = \" Carries a [`FailRecord`] with the structured diagnostic: description, reproducing seed,\"] # [doc = \" trial index, and op context. Use [`FailRecord::to_diag`] to project to the canonical\"] # [doc = \" [`mycelium_diag::Diag`] record (FLAG-DIAG RESOLVED — `std.diag` has landed, M-510).\"] Fail { # [doc = \" The structured failure record (spec §3 `Fail { diagnostic: Diag }`).\"] record : FailRecord , } , # [doc = \" The check could not run. **Reported, never silently absent (C1/G2 — the honesty crux).**\"] Skipped { # [doc = \" Why the check was skipped (never anonymous — C3/G11).\"] reason : SkipReason , } , # [doc = \" The check ran but could not reach a verdict (e.g. oracle unavailable, budget exhausted\"] # [doc = \" inconclusively). **Not a `Pass` (C1/G2).**\"] Undetermined { # [doc = \" Why the verdict could not be determined.\"] reason : UndetReason , } , }",
+      "reason": "enum `Verdict` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 108,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The outcome of a single test case (spec §3 / §4 guarantee matrix).\"] # [doc = \"\"] # [doc = \" **The honesty crux:** `Skipped` and `Undetermined` are **first-class variants**, not flavours\"] # [doc = \" of `Pass`. The aggregator ([`crate::summarize`]) keeps their counts distinct; [`crate::is_green`]\"] # [doc = \" surfaces them. \\\"Green\\\" therefore means *checked and passed*, never *did not check* (C1/G2).\"] # [doc = \"\"] # [doc = \" # C3 — EXPLAIN\"] # [doc = \" Every non-`Pass` variant is a reified, inspectable artifact:\"] # [doc = \" - `Fail` — carries a [`FailRecord`] with description, seed, trial, context.\"] # [doc = \" - `Skipped` — carries a [`SkipReason`] (never a nameless skip).\"] # [doc = \" - `Undetermined` — carries an [`UndetReason`] (never a nameless non-decision).\"] # [derive (Debug , Clone , PartialEq , Eq)] pub enum Verdict { # [doc = \" The check ran and all assertions passed.\"] Pass , # [doc = \" The check ran and at least one assertion failed.\"] # [doc = \"\"] # [doc = \" Carries a [`FailRecord`] with the structured diagnostic: description, reproducing seed,\"] # [doc = \" trial index, and op context. Use [`FailRecord::to_diag`] to project to the canonical\"] # [doc = \" [`mycelium_diag::Diag`] record (FLAG-DIAG RESOLVED — `std.diag` has landed, M-510).\"] Fail { # [doc = \" The structured failure record (spec §3 `Fail { diagnostic: Diag }`).\"] record : FailRecord , } , # [doc = \" The check could not run. **Reported, never silently absent (C1/G2 — the honesty crux).**\"] Skipped { # [doc = \" Why the check was skipped (never anonymous — C3/G11).\"] reason : SkipReason , } , # [doc = \" The check ran but could not reach a verdict (e.g. oracle unavailable, budget exhausted\"] # [doc = \" inconclusively). **Not a `Pass` (C1/G2).**\"] Undetermined { # [doc = \" Why the verdict could not be determined.\"] reason : UndetReason , } , }",
+      "reason": "enum `Verdict` derive(Eq): covered by co-occurring PartialEq → `fn eq_Verdict` (product-row collision policy; DN-128 / ONESHOT C2) — not a second emission",
+      "item_name": "Verdict"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 147,
+      "col": 1,
+      "category": "NamedFieldDrop",
+      "rust_construct": "NamedFieldDrop",
+      "snippet": "# [doc = \" The aggregated outcome of a collection of verdicts (spec §3 / [`crate::summarize`]).\"] # [doc = \"\"] # [doc = \" # The crux\"] # [doc = \" `skipped` and `undetermined` are **distinct from `passed`** — a `Summary` cannot be used\"] # [doc = \" to claim \\\"all passed\\\" when tests were skipped (C1/G2). See [`crate::is_green`].\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The per-class counts are the EXPLAIN artifact: a caller can inspect them to see how many\"] # [doc = \" tests ran, how many were skipped, and why the suite is or is not green.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , Default)] pub struct Summary { # [doc = \" Number of verdicts that were [`Verdict::Pass`].\"] pub passed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Fail`].\"] pub failed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Skipped`] (**distinct from passed**).\"] pub skipped : u32 , # [doc = \" Number of verdicts that were [`Verdict::Undetermined`] (**distinct from passed**).\"] pub undetermined : u32 , }",
+      "reason": "struct `Summary` named field(s) `passed, failed, skipped, undetermined` emitted positionally as `Summary(Binary{32}, Binary{32}, Binary{32}, Binary{32})` — Mycelium's `constructor` is positional-only (no record surface); product structure preserved, field names dropped (matches `lib/std/*.myc` hand-ports)",
+      "item_name": "Summary"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 147,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The aggregated outcome of a collection of verdicts (spec §3 / [`crate::summarize`]).\"] # [doc = \"\"] # [doc = \" # The crux\"] # [doc = \" `skipped` and `undetermined` are **distinct from `passed`** — a `Summary` cannot be used\"] # [doc = \" to claim \\\"all passed\\\" when tests were skipped (C1/G2). See [`crate::is_green`].\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The per-class counts are the EXPLAIN artifact: a caller can inspect them to see how many\"] # [doc = \" tests ran, how many were skipped, and why the suite is or is not green.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , Default)] pub struct Summary { # [doc = \" Number of verdicts that were [`Verdict::Pass`].\"] pub passed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Fail`].\"] pub failed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Skipped`] (**distinct from passed**).\"] pub skipped : u32 , # [doc = \" Number of verdicts that were [`Verdict::Undetermined`] (**distinct from passed**).\"] pub undetermined : u32 , }",
+      "reason": "struct `Summary` derive(Clone) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Summary"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 147,
+      "col": 1,
+      "category": "DeriveSatisfied",
+      "rust_construct": "DeriveSatisfied",
+      "snippet": "# [doc = \" The aggregated outcome of a collection of verdicts (spec §3 / [`crate::summarize`]).\"] # [doc = \"\"] # [doc = \" # The crux\"] # [doc = \" `skipped` and `undetermined` are **distinct from `passed`** — a `Summary` cannot be used\"] # [doc = \" to claim \\\"all passed\\\" when tests were skipped (C1/G2). See [`crate::is_green`].\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The per-class counts are the EXPLAIN artifact: a caller can inspect them to see how many\"] # [doc = \" tests ran, how many were skipped, and why the suite is or is not green.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , Default)] pub struct Summary { # [doc = \" Number of verdicts that were [`Verdict::Pass`].\"] pub passed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Fail`].\"] pub failed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Skipped`] (**distinct from passed**).\"] pub skipped : u32 , # [doc = \" Number of verdicts that were [`Verdict::Undetermined`] (**distinct from passed**).\"] pub undetermined : u32 , }",
+      "reason": "struct `Summary` derive(Copy) is a satisfied no-op under Mycelium's value semantics (ADR-003 — every value already copies structurally; DN-128 §6.1) — not emitted as an impl, not a gap",
+      "item_name": "Summary"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 147,
+      "col": 1,
+      "category": "DeriveAttr",
+      "rust_construct": "DeriveAttr",
+      "snippet": "# [doc = \" The aggregated outcome of a collection of verdicts (spec §3 / [`crate::summarize`]).\"] # [doc = \"\"] # [doc = \" # The crux\"] # [doc = \" `skipped` and `undetermined` are **distinct from `passed`** — a `Summary` cannot be used\"] # [doc = \" to claim \\\"all passed\\\" when tests were skipped (C1/G2). See [`crate::is_green`].\"] # [doc = \"\"] # [doc = \" # EXPLAIN\"] # [doc = \" The per-class counts are the EXPLAIN artifact: a caller can inspect them to see how many\"] # [doc = \" tests ran, how many were skipped, and why the suite is or is not green.\"] # [derive (Debug , Clone , Copy , PartialEq , Eq , Default)] pub struct Summary { # [doc = \" Number of verdicts that were [`Verdict::Pass`].\"] pub passed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Fail`].\"] pub failed : u32 , # [doc = \" Number of verdicts that were [`Verdict::Skipped`] (**distinct from passed**).\"] pub skipped : u32 , # [doc = \" Number of verdicts that were [`Verdict::Undetermined`] (**distinct from passed**).\"] pub undetermined : u32 , }",
+      "reason": "struct `Summary` derive(...) names Eq not in the DN-128 standard-derive set this leaf builds (Debug/Default/Clone/Copy/PartialEq/PartialOrd/Hash all recognized; bare Eq/Ord are deliberately NOT recognized — see emit/derives/mod.rs::TABLE's doc for why) — dropped, no confirmed Mycelium surface",
+      "item_name": "Summary"
+    },
+    {
+      "file": "/root/git/isolated/mycelium/crates/mycelium-std-testing/src/verdict.rs",
+      "line": 168,
+      "col": 1,
+      "category": "Impl",
+      "rust_construct": "Impl",
+      "snippet": "impl Summary { # [doc = \" Total number of verdicts in this summary.\"] # [must_use] pub fn total (& self) -> u32 { self . passed . saturating_add (self . failed) . saturating_add (self . skipped) . saturating_add (self . undetermined) } }",
+      "reason": "no member of this impl block could be transpiled (1 sub-issue(s)): impl method `total` body: Rust `.saturating_add` is saturating (silent clamp) — Mycelium has no saturating prim surface; desugaring to `saturating_add(…)` would fabricate an unknown prim or lie about overflow (G2/VR-5). Gap never-silently (express gap-close 2026-07-16).",
+      "item_name": "Summary"
+    }
+  ],
+  "category_counts": {
+    "AssocConst": 2,
+    "DeriveAttr": 7,
+    "DeriveSatisfied": 15,
+    "Impl": 7,
+    "Import": 6,
+    "InnerAttr": 1,
+    "ModuleDecl": 3,
+    "MultiStmtBody": 3,
+    "NamedFieldDrop": 7,
+    "Other": 9,
+    "Struct": 4,
+    "TestItem": 1,
+    "Trait": 1,
+    "WhereClause": 3
+  }
+}

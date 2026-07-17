@@ -1,0 +1,21 @@
+// nodule: std.testing.guarantee_matrix
+// Guarantee matrix for `std.testing` (M-534, #174) — RFC-0016 §4.5.
+//
+// Encoded as checked data + asserted in tests (never prose only — spec §4 / README §2).
+//
+// # Tag justification (VR-5 — downgrade rather than overclaim)
+// The harness ops are **`Exact` mechanisms**: a `Verdict` is an exact, deterministic function
+// of the run (seeded property → reproducible; golden compare → exact equality; differential →
+// exact equality of observables). This `Exact` is about the *verdict mechanism*, **not** a
+// claim about the subject under test.
+//
+// The harness **never inflates the subject's tag** (C2 crux): a passing `for_all` backs
+// `Empirical`, not `Proven`. There is no operation in this module that turns
+// "passed N trials" into `Proven` — that would be the VR-5 violation the module exists to
+// prevent (spec §4 tag justification).
+// @summary: best-effort transpilation via mycelium-transpile (M-873). Declared,
+// unvalidated — no Mycelium parser/typechecker confirms this output; see the
+// accompanying .gap.json for every construct this pass could not express.
+nodule std.testing.guarantee_matrix;
+
+

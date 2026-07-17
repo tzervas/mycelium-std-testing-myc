@@ -1,0 +1,85 @@
+// nodule: std.testing.cert_mode_test
+// **Scoped mode-parametric testing** (M-796; RFC-0034 §13) — the §13 conformance contract as a
+// first-class, natively-wired capability of the Mycelium testing toolkit.
+//
+// # What this provides
+//
+// A downstream developer marks a test or suite to run **across the `CertMode` tiers** with the
+// cross-mode negative pattern (fires-where-it-applies / absent-where-it-doesn't) as a **built-in**
+// — no hand-rolling required (RFC-0034 §13 ¶8: "give developers the tool + the default + the scope
+// dial, and let them choose").
+//
+// ## Core types
+// - **[`ModeScope`]** — a typed `[bool; 3]` predicate set declaring which `CertMode` tiers a
+//   property is expected to hold in. Predefined constants cover the common RFC-0034 cases; custom
+//   scopes are built from `[bool; 3]` in `[Fast, Balanced, Certified]` order.
+// - **[`ModeTestConfig`]** — the configurable scope for a test/suite, resolved most-specific-wins
+//   (`global ⊐ phylum ⊐ nodule ⊐ granular`) via M-790's `resolve_mode` / `CertDecl` mechanism
+//   (shared resolver — not a parallel one). Carries the `@certification` resolution provenance.
+//
+// ## Core functions
+// - **[`for_each_mode`]** — sweep all `CertMode` tiers, calling a closure for each. Always-on:
+//   every mode is visited and reported (never-silent — C1/G2). The simplest entry point.
+// - **[`for_each_mode_in`]** — like `for_each_mode`, but filtered by a `ModeScope`: only visits
+//   modes in scope. Returns the tiers visited and the tiers skipped, so the caller can verify
+//   that the right modes ran (never-silent about which tiers ran — C1/G2).
+// - **[`assert_mode_scope`]** — the primary assertion helper: given a `ModeScope` and a predicate,
+//   asserts `predicate(mode) == true` for each mode in scope and `== false` for each mode outside
+//   scope — the cross-mode **negative** pattern made first-class. Both directions are checked; a
+//   panic on either side surfaces the exact violating mode and direction.
+// - **[`assert_mode_negative`]** — negative-only helper: asserts a property is **absent** in all
+//   modes outside the given scope (the "invariant must not fire where it doesn't apply" check, the
+//   dual of a simple `assert_eq!`).
+// - **[`ModeTestConfig::resolve`]** — derive the effective `ModeScope` from a stack of
+//   `@certification` declarations (most-specific-wins), using the **shared** M-790 resolver
+//   ([`mycelium_proj::resolve_mode`]) — not a parallel implementation.
+//
+// ## CONFIGURABLE SCOPE (RFC-0034 §6 reused for testing)
+//
+// The `@certification` scoping mechanism (most-specific-wins over `global > phylum > nodule`,
+// RFC-0012 ambient/scoped-override) is **reused** here for test scope configuration:
+//
+// - **Project-wide default** — supplied as a `[CertDecl]` at the `Phylum` or `Global` scope.
+// - **Nodule-wide** — a `CertDecl` at `Nodule` scope overrides the project default.
+// - **Granular per-test** — [`ModeTestConfig::with_granular`] overrides at the finest granularity.
+//
+// Resolution uses `mycelium_proj::resolve_mode`, so the test scope and the `@certification`
+// attribute share a single resolution algorithm (no drift, no second implementation — KC-3).
+//
+// ## Never-forces (RFC-0034 §7 / the never-cornering stance)
+//
+// Nothing in this module forces a mode change on the test runner or on the values under test.
+// `ModeScope` and `ModeTestConfig` are advisory: they declare what the test author *intends* to
+// check, so the harness can surface mismatches (wrong tiers ran, property held where it shouldn't)
+// as explicit verdicts — never silently.
+//
+// ## Guarantee matrix
+// | Op | Tag | Fallibility | Effects | EXPLAIN |
+// |---|---|---|---|---|
+// | `for_each_mode` | Exact | total | none | yes (visits are reported) |
+// | `for_each_mode_in` | Exact | total | none | yes (`ModeVisit` carries visited/skipped sets) |
+// | `assert_mode_scope` | Exact | panics on mismatch | none | yes (mode + direction in panic msg) |
+// | `assert_mode_negative` | Exact | panics on mismatch | none | yes (mode in panic msg) |
+// | `ModeTestConfig::resolve` | Exact | total | none | yes (provenance in `ResolvedMode`) |
+//
+// **Guarantee tag: `Declared`** — this module exposes the *mechanism* for mode-parametric testing;
+// the guarantee strength of any *specific* property tested through this harness is determined by
+// the test author, never by the harness (VR-5 — no inflation).
+//
+// ## FLAGs for maintainer ratification
+// - **FLAG-SURFACE:** This module provides the *library-level* capability. The surface-syntax
+//   `@cert_scope` / `@mode_scope` annotations mentioned in RFC-0034 §13 are a future language-level
+//   feature (lands with surface-syntax work). Until then, `ModeTestConfig::with_granular` is the
+//   granular per-test override. This is the smallest honest version that satisfies the M-796 DoD;
+//   the surface-phase follow-on is flagged, not silently deferred.
+// - **FLAG-INJECT:** `ModeTestConfig::resolve` always uses the project-default `Fast` when no
+//   declarations are supplied (RFC-0034 §5 default). If the project needs a test-specific default
+//   of `Balanced`/`Certified`, supply a `[CertDecl { scope: Phylum, mode: CertMode::Balanced }]`.
+//   There is no separate "test-default" mechanism; project + nodule + granular is the resolution
+//   chain (the shared M-790 lattice, composed here for testing).
+// @summary: best-effort transpilation via mycelium-transpile (M-873). Declared,
+// unvalidated — no Mycelium parser/typechecker confirms this output; see the
+// accompanying .gap.json for every construct this pass could not express.
+nodule std.testing.cert_mode_test;
+
+
